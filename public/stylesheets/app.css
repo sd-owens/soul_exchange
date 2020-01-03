@@ -1,0 +1,159 @@
+body {
+    background-color: #000000;
+    color: #FFFFFF;
+}
+
+a:link {
+    color: white;
+    text-decoration: underline;
+}
+
+a:visited {
+    color: #888888;
+}
+
+input {
+    color: black;
+}
+
+legend {
+    color: white;
+}
+
+.pageContainer {
+    width: 60%;
+    margin: 0 auto;
+}
+
+.endsSoon {
+    width: 90%;
+    margin: auto;
+}
+
+.listing {
+    height: auto;
+    margin: 20px;
+}
+
+.listHeading {
+    height: 110px;
+}
+
+/*.listImage {
+    width: 150px;
+    object-fit: cover;
+}*/
+
+div.imgThumb {
+    width: 100px;
+    height: 100px;
+    margin: 0 10px;
+    object-fit: cover;
+    overflow: hidden;
+    border-radius: 50%;
+    float: left;
+    clear: left;
+    background-color: #000000;
+}
+
+.item img {
+    padding: 50px;
+    margin: auto;
+}
+
+#myCarousel {
+    width:60%;
+    background-color: #222222;
+    border-radius: 5px;
+    margin:0 auto;
+}
+.carouselHeader {
+    background-color: #000000;
+    text-align: left;
+}
+
+.soulImage {
+    margin: 60px;
+    border-radius: 50%;
+}
+
+.carouselLink {
+    color:white;
+    text-decoration: underline;
+}
+
+div.soul {
+    
+}
+
+img.avatar, img.leftImage{
+   float: left;
+   margin: 20px;
+   width: 100px;
+   border-radius: 50%;
+}
+
+div.soulText {
+    padding-top:30px;
+}
+.soul_name {
+    color: white;
+    font-weight: 700;
+    font-size: 1.5em;
+}
+
+.soulScore {
+    font-weight: 500;
+    font-size: 1.4em;
+}
+
+.soulDescription, p.desc {
+    font-style: italic;
+}
+
+.currentBid {
+    margin: 0 auto;
+    margin-top: 50px;
+    color: green;
+}
+
+.bidInput {
+    margin: 0 auto;
+}
+
+#amount {
+    color: #888888;
+    font-weight: 600;
+
+}
+
+ .cardinalSins label, .cardinalSins input {
+    width: 10%;
+    display: block;
+    float: left;
+    text-align: center;
+}
+
+.mortalSin, .cardinalSins, .submitForm{
+    margin: 30px 0;
+}
+
+p.projectNote{
+    color: yellow;
+    display:none;
+}
+
+.btn-primary {
+    color:#FFF!important;
+}
+
+.manageSouls {
+    height:250px;
+    width:70%;
+    margin: auto;
+    overflow:auto;
+    background-color: #333333;
+    color:white;
+}
+
+

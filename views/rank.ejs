@@ -1,0 +1,83 @@
+<% include ./partials/header %>
+<h1>Soul Ranking</h1>
+<p>
+    While The Soul Exchange would like to include a variety of methods to determine soul ranking to offer the most inclusive soul ranking system in existence, we are afraid we're in a bit of a time-crush, so this version is our first proof of concept.  The PoC is based on sin as defined within Catholicism.  I chose Catholicism as the first ranking strategy for the following reasons:
+</p>
+<ul>
+    <li>My relative familiarity with sin and absolution within Catholicism</li>
+    <li>Extensive, easily accessible, and codefied systems of moral behavior and absolution that translate easily into a ranking</li>
+    <li>Post-reformation Catholicism probably wouldn't hold a lot of outrage for The Soul Exchange</li>
+</ul>
+
+<h3>Ranking Methodology</h3>
+<p>
+    Soul Rankings range from 1 to 7 for Pure/Repentent to Damned respectively.  Rankings are determined using a "Mortal Sin" heuristic, whereby being in a state of Mortal Sin places you in Rank 7(Damned), until such time has you have revceived absolution. 
+    <br /><a href="https://en.wikipedia.org/wiki/Mortal_sin">More Details.</a>
+</p> 
+
+
+<p>If your soul is not in a state of Mortal Sin, we revert to a "<a href="https://en.wikipedia.org/wiki/Seven_deadly_sins">Cardinal Sin</a>" index.  The CSI is used to gauge the soul's relative stain by ranking each Cardinal Sin Category 1-7, then averaging the result.  The result is a determination of how close your soul is to something approaching cleanliness.</p>
+
+<form action="/manage" method="post">
+    <fieldset class="mortalSin">
+        <legend>Mortal Sin</legend>
+        <p>
+            Are you currently in a state of Mortal Sin? 
+        </p>
+        <input type="radio" name="mortalSin" value="1" checked="checked"> Yes
+        <input type="radio" name="mortalSin" value="0"> No
+        <p class="projectNote"><strong>Note:</strong> Everyone is in a state of Mortal Sin until I can get the Cardinal Sin sliders to submit values into a form--which is way harder than it should be. Expect your soul to achieve a rank of 7.  Have fun in hell...sinner!</p>
+    </fieldset>  
+
+    <div class="cardinalSins">
+        <fieldset class="cardinalSin">
+            <legend>Cardinal Sins</legend>
+            <p>Please select a value for your propensity to engage in each cardinal sin: </p>
+            <label for="lust">
+                Lust<br />
+                <input id="lust" type="text"/>
+            </label>
+            <label for="gluttony">
+                Gluttony<br />
+                <input id="gluttony" type="text"/>
+            </label>
+            <label for="greed">
+                Greed<br />
+                <input id="greed" type="text"/>
+            </label>
+            <label for="sloth">
+                Sloth<br />
+                <input id="sloth" type="text"/>
+            </label>
+            <label for="wrath">
+                Wrath<br />
+                <input id="wrath" type="text"/>
+            </label>
+            <label for="envy">
+                Envy<br />
+                <input id="envy" type="text"/>
+            </label>
+            <label for="pride">
+                Pride<br />
+                <input id="pride" type="text"/>
+            </label>    
+        </fieldset> 
+        <fieldset class=submitForm>
+            <legend></legend>
+            <button class="btn btn-primary">submit</button>
+        </fieldset>
+        
+    </div>
+    
+</form>
+
+
+<% include ./partials/footer %>
+
+<!-- Lust    Luxuria     "Lussuria"  Chastity    Castitas    "Castità"
+Gluttony    Gula    "Gola"  Temperance  Moderatio   "Temperanza"
+Greed   Avaritia    "Avarizia"  Charity (or, sometimes, Generosity)     Caritas (Liberalitas)   "Generosità"
+Sloth   Acedia  "Accidia"   Diligence   Industria   "Diligenza"
+Wrath   Ira     "Ira"   Patience    Patientia   "Pazienza"
+Envy    Invidia     "Invidia"   Gratitude   Gratia  "Gratitudine"
+Pride   Superbia    "Superbia"  Humility    Humilitas   "Umiltà"  -->

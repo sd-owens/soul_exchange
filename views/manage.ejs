@@ -1,0 +1,39 @@
+<% include ./partials/header %>
+
+<h3>Details</h3>
+<ul> 
+    <li>User Name: <%=currentUser.username%></li>
+    <li>First Name: <%= obj[0].first_name %></li>
+    <li>Last Name: <%= obj[0].last_name %></li>
+    <li>Wallet Balance: <%= obj[0].balance %></li>
+</ul>
+
+<h3 id="manageSoulsHeader">Collected Souls</h3>
+<div class="manageSouls">
+    <table>
+    <% for(var i = 0; i < obj.length; i++){ %>
+        <tr>
+            <td><img src="<%= obj[i].avatar %>" class='leftImage'></td>
+            <td>
+                <ul>
+                    <li><%= obj[i].soul_name %></li> 
+                    <% if(obj[i].soul_score > 0 ){ %>
+                        <li>Ranking: <%= obj[i].soul_score %></li>
+                    <% } else { %>
+                        <li><a href="/manage/new">Set Soul Ranking</a></li>
+                    <% } %>
+                </ul>
+                <a class="btn btn-primary" role="button" href="/assets/img/soulCertificate.png" download=" <%= obj[i].soul_id %>.png ">
+                <span class="glyphicon glyphicon-download-alt"></span> Certificate of Ownership</a>
+                <p class="projectNote"><strong>Note:</strong> Eventually, this would generate a PDF, but not yet.</p>
+                
+             <% if(obj[i].soul_score > 0 ){ %>
+                <a class="btn btn-primary" href="#" ><span class="glyphicon glyphicon-tag"></span> List Soul</a>
+            <% } %>
+            </td>
+    <% } %>
+    </table>
+</div>
+
+<% include ./partials/footer %>
+

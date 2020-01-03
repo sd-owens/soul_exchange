@@ -1,0 +1,48 @@
+<% include ./partials/header %>
+    <div class="soulEntry"> 
+        <div class="soul">
+            <div class="circleAvatar">
+                <img class="avatar" src=<%= obj[0].avatar %>
+            </div>
+            <div class="soulText">
+               <div class="soul_name">Name: <%= obj[0].soul_name %></div>
+                <div class="soulScore">Rank: <%= obj[0].soul_score %></div>
+                <div class="soulDescription">Description: <%= obj[0].description %></div> 
+            </div>
+        </div>
+    </div>
+
+    <div class="currentBid">
+        <strong>Current Bid: </strong><%= '$'+ (obj[0].currBidCents/100).toFixed(2) %>
+    </div>
+    <div class='bidInput'><strong>Bid Now:</strong><br /> 
+        <div class="bidForm">
+            <form action="/listings/:id/bid?_method=PUT" method="POST">
+                <label for="amount" class="">$</label>
+                  <input type="text" id="amount" placeholder=
+                    <% if (obj[0].currBidCents < obj[0].minBidCents ) { %>
+                        <%= (parseInt(obj[0].minBidCents/100)) %>
+                    <% } else { %>
+                    <%= (parseInt(obj[0].currBidCents/100)) + 1 %>
+                    <% } %> >.00 <button class="btn btn-primary btn-sm">Bid</button>
+                </div>
+            </form>  
+    </div> 
+    <br />
+    <h4>Full Listing Details:</h4>
+    <ul>
+    <li>listing_id: <%= obj[0].listing_id %></li>
+    <li>soul_id: <%= obj[0].soul_id %></li>
+    <li>seller_id: <%= obj[0].seller_id %></li>
+    <li>startDatetime: <%= obj[0].startDatetime %></li>
+    <li>endDatetime: <%= obj[0].endDatetime %></li>
+    <li>minBidCents: <%= obj[0].minBidCents %></li>
+    <li>currBidCents: <%= obj[0].currBidCents %></li>
+    <li>description: <%= obj[0].description %></li>
+    <li>default_img: <%= obj[0].default_img %></li>
+    <li>owner_id: <%= obj[0].owner_id %></li>
+    <li>soul_name: <%= obj[0].soul_name %></li>
+    <li>soul_score: <%= obj[0].soul_score %></li>
+    <li>avatar: <%= obj[0].avatar %></li>
+    </ul>
+<% include ./partials/footer %>
