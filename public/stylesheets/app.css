@@ -10,6 +10,13 @@ body {
 
 }
 
+.navbar {
+    border-radius: 10px;
+    overflow: hidden;
+    border: none;
+    box-shadow: 0 8px 6px -6px black;
+}
+
 h3, h4 {
     font-style: italic;
     /* text-shadow: 2px 2px black; */
@@ -95,6 +102,7 @@ div.imgThumb {
 .carouselLink {
     color:white;
     /* text-decoration: underline; */
+    text-shadow: 2px 2px black;
 }
 
 div.soul {
