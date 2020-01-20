@@ -20,10 +20,11 @@ legend {
     color: white;
 }
 
-.pageContainer {
+/* disabled for work on carousel and dynamic response */
+/* .pageContainer {
     width: 60%;
     margin: 0 auto;
-}
+} */
 
 .endsSoon {
     width: 90%;
