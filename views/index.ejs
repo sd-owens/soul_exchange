@@ -1,7 +1,7 @@
 <% include ./partials/header %>
 
   <div id="myCarousel" class="carousel slide" data-ride="carousel">
-    <div class="carouselHeader"><h4>Ending Soon!</h4></div>
+    <div class="carouselHeader"><h4>Ending Soon...</h4></div>
     <!-- Indicators -->
     <ol class="carousel-indicators">
     <%  if(obj.length > 0) { %>
@@ -51,7 +51,7 @@
   </div>
 
 <!-- Main listings -->
-<h3>Listings</h3>
+<h3>Available Souls!</h3>
 <% for(var i = 5; i < obj.length; i++){ %>
     <div class='soulListing'>
         <div class = "listHeading">
@@ -67,7 +67,7 @@
                 <p class="desc"><%= obj[i].description %></p>
                 Current Bid: </strong><%= '$'+ (obj[i].currBidCents/100).toFixed(2) %>
             </div>
-            <div class="dt"> Ends: <%= obj[i].endDatetime %>
+            <div class="dt"> Ends: <%= obj[i].endDatetime %></div>
         </div>
         <hr>
     </div> 

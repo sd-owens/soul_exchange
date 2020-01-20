@@ -1,11 +1,27 @@
 body {
-    background-color: #000000;
-    color: #FFFFFF;
+    /* background-color: #000000; */
+    font-family: 'ZCOOL QingKe HuangYou', cursive;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px black;
+    color: red;
+    background: #8E0E00;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #1F1C18, #8E0E00);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #1F1C18, #8E0E00); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+
+h3, h4 {
+    font-style: italic;
+    /* text-shadow: 2px 2px black; */
+}
+
+h4 {
+    text-align: center;
 }
 
 a:link {
     color: white;
-    text-decoration: underline;
+    /* text-decoration: underline; */
 }
 
 a:visited {
@@ -20,11 +36,6 @@ legend {
     color: white;
 }
 
-.pageContainer {
-    width: 60%;
-    margin: 0 auto;
-}
-
 .endsSoon {
     width: 90%;
     margin: auto;
@@ -37,6 +48,7 @@ legend {
 
 .listHeading {
     height: 110px;
+
 }
 
 /*.listImage {
@@ -62,13 +74,16 @@ div.imgThumb {
 }
 
 #myCarousel {
-    width:60%;
+    width:100%;
     background-color: #222222;
-    border-radius: 5px;
+    border-radius: 10px;
+    overflow: hidden;
     margin:0 auto;
+    box-shadow: 0 8px 6px -6px black;
 }
 .carouselHeader {
-    background-color: #000000;
+    padding: 2px;
+    background-color: #222222;
     text-align: left;
 }
 
@@ -79,7 +94,7 @@ div.imgThumb {
 
 .carouselLink {
     color:white;
-    text-decoration: underline;
+    /* text-decoration: underline; */
 }
 
 div.soul {
