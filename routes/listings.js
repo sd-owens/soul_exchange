@@ -3,6 +3,16 @@ var bodyParser  = require("body-parser"),
     pool        = require('../db'),
     router      = express.Router();
 
+//RESTFUL ROUTE EXAMPLES
+//name      url         verb        desc
+//============================================================
+//INDEX     /dogs       GET         Display a list of all dogs
+//NEW       /dogs/new   GET         Displays form to create new dog
+//CREATE    /dogs       POST        Adds a new dog to the database
+//SHOW      /dogs/:id   GET         Shows info about one dog
+//EDIT      /dogs/:id/edit  GET     Show edit form for one dog
+//UPDATE    /dogs/:id   PUT         Update particular dog, then redirect somewhere
+//DESTROY   /dogs/:id   DELETE      remove one dog
 
 //====================
 //Listing routes
