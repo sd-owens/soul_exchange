@@ -1,74 +1,148 @@
-var express = require("express");
-var router = express.Router();
-var mysql = require('../dbcon.js');
+var express = require("express"),
+    mysql   = require('../dbcon.js'),
+    pool    = require('../db'),
+    router  = express.Router();
 
 // AUTH ROUTES
+//==================================================================
+//RESTFUL ROUTES
+//name      url         verb        desc
+//============================================================
+//INDEX     /dogs       GET         Display a list of all dogs
+//NEW       /dogs/new   GET         Displays form to create new dog
+//CREATE    /dogs       POST        Adds a new dog to the database
+//SHOW      /dogs/:id   GET         Shows info about one dog
+//EDIT      /dogs/:id/edit  GET     Show edit form for one dog
+//UPDATE    /dogs/:id   PUT         Update particular dog, then redirect somewhere
+//DESTROY   /dogs/:id   DELETE      remove one dog
 
-//show register form
-router.get("/register", function(req, res){
-    res.render("register");
-})
+router.get('/register', function(req, res){
+    res.render('register.ejs');
+});
 
-//handle sign up logic
-router.post("/register", function(req, res){
-    var newUser = new User({username: req.body.username});
-    User.register(newUser, req.body.password,function(err, user){
-        if(err){
-            console.log(err);
-            return res.render("register")
-        }
-        mysql.pool.getConnection(function (err, connection){
-            sql = 'INSERT INTO users (user_name, first_name, last_name, password) VALUES (?,?,?,?)'
-            const newUser = await connection.query(sql, [username, firstname, lastname, password]); 
-            sql = 'SELECT * FROM users WHERE user_name = ?'
-            const userRecord = await connection.query(sql, [username]);
-            var obj = result;
+//==================================================================
+//Register new users- built with asyn, await.  
+//==================================================================
 
-
-
-        //     connection.query(sql, , function(err, result, fields){
-        //     if(err){
-        //         throw err;
-        //     } else {
-        //         sql = 'INSERT INTO souls () VALUES()'
-        //         connection.query(sql, [username, firstname, lastname, password], function(err, result, fields){
-        //         if(err){
-        //             throw err;
-        //         } else {
-        //             var obj = result;
-        //             console.log(obj);
-        //             req.session.loggedin = true;
-        //             req.session.username = username;
-        //             res.redirect("/");
-        //         }
-        });
-    });
+router.post('/register', async function(req, res){
+    try{
+        //insert new user into users table
+        var new_user = [req.body.user_name, req.body.first_name, req.body.last_name, req.body.password];
+        var sql = 'INSERT INTO users (user_name, first_name, last_name, password) VALUES (?,?,?,?)';
+        await pool.query(sql, new_user);
+    } catch {
+        console.log(pool.err);
+    } 
+    try {
+        //get the new user_id from the users table
+        sql = 'SELECT user_id, user_name FROM users WHERE user_name = ?';
+        var rows = await pool.query(sql, req.body.user_name);
+    } catch {
+        console.log(pool.err)
+    };
+    try {
+        //insert a new soul into the souls table and associate it with the new user. (note, might need a ginger-conditional)
+        soul_name = req.body.first_name + " " + req.body.last_name;
+        user_id = rows[0].user_id;
+        user_name = rows[0].user_name;
+        sql = 'INSERT INTO souls (originator_id, owner_id, soul_name) VALUES (?,?,?)';
+        await pool.query(sql, [user_id, user_id, soul_name]);
+    } catch {
+        console.log(pool.err);
+    };
+    try {
+        //create a session and redirect
+        var sess                = req.session;      //initialize session variable
+        req.session.user_id     = user_id;          //set user id
+        req.session.user_name   = user_name;        //set user name
+        res.redirect('/dbtest');
+    } catch {
+        console.log(pool.err);
+    };
 });
 
 //show login form
 router.get("/login", function(req, res){
-    res.render("login");
+    res.render("login.ejs");
 })
 
 //handle login logic
-router.post("/login", passport.authenticate("local", 
-            {
-                successRedirect: "/", 
-                failureRedirect: "/login"
-            }), function(req, res){
-});
-
-//logout route
-router.get("/logout", function(req, res){
-    req.logout();
-    res.redirect("/");
-});
-
-function isLoggedIn(req, res, next){
-    if(req.isAuthenticated()){
-        return next();
+router.post("/login", async function(req, res){
+    var user_name = req.body.user_name;
+    var password = req.body.password;
+    sql = 'SELECT user_name, user_id, password from users WHERE user_name = ?';
+    try{
+        //get record of user with user_name, create their session, and redirect them
+        var rows = await pool.query(sql, user_name);
+        // make sure it returns a result
+        if(rows.length > 0){
+            //make sure the password matches (TODO - figure out how to implement bcrypt and don't store plaintext passwords)
+            if(rows[0].password == password){
+                if(sessionData){                            //destroy any existing session before creating a new one
+                    sessionData.destroy();
+                }
+                var sessionData         = req.session;      //initialize session variable
+                sessionData.user = {"id": rows[0].user_id,
+                                    "name": rows[0].user_name
+                                    };     
+                res.redirect('/dbtest');
+            }
+            else {
+                res.send({
+                    "code":204,"success":"User name and password do not match"});
+            }
+        } else {
+            res.send({"code":204,"success":"Email does not exist"});    
+        }
+    } catch {
+        console.log(pool.err);
+        res.send({"code":400,"failed":"error ocurred in catch"});
     }
+});
+
+//logout route - destroys the session
+router.get("/logout", function(req, res){
+    var sessionData = req.session;
+    sessionData.destroy(function(err) {
+        if(err){
+            msg = 'Error destroying session';
+        }else{
+            msg = 'Session destroy successfully';
+            console.log(msg)
+        }
+    });
     res.redirect("/login");
-}
+});
+
+//ASYNC AWAIT EXAMPLE WORKING WITH DB
+router.get('/dbtest', sessionChecker, async function(req, res){
+
+    try{
+        //console.log(req.session);
+        var sql = 'SELECT * FROM users where user_id = ?';
+        curr_user = req.session.user;
+        //console.log("Current User ID: " + curr_user);
+        var rows = await pool.query(sql, [curr_user.id]);
+        //console.log({rows});
+        res.render('test.ejs', {rows});
+    } catch(err) {
+       console.log(err);
+    }
+    try {
+
+    } catch {
+        
+    };
+
+});
+
+//middleware to check for a session
+function sessionChecker(req, res, next){
+    if (req.session.user) {
+        next();
+    } else {
+    res.redirect('/login');
+    }    
+};
 
 module.exports = router;
