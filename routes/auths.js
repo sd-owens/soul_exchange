@@ -1,7 +1,7 @@
-var express = require("express"),
-    mysql   = require('../dbcon.js'),
-    pool    = require('../db'),
-    router  = express.Router();
+var bodyParser  = require("body-parser"),
+    express     = require("express"),
+    pool        = require('../db'),
+    router      = express.Router();
 
 // AUTH ROUTES
 //==================================================================

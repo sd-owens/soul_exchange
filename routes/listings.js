@@ -1,18 +1,8 @@
+var bodyParser  = require("body-parser"),
+    express     = require("express"),
+    pool        = require('../db'),
+    router      = express.Router();
 
-//RESTFUL ROUTES
-//name      url         verb        desc
-//============================================================
-//INDEX     /dogs       GET         Display a list of all dogs
-//NEW       /dogs/new   GET         Displays form to create new dog
-//CREATE    /dogs       POST        Adds a new dog to the database
-//SHOW      /dogs/:id   GET         Shows info about one dog
-
-var express = require("express");
-var router = express.Router();
-var passport = require("passport");
-var User = require("../models/user");
-var mysql = require('../dbcon.js');
-var bodyParser = require("body-parser");
 
 //====================
 //Listing routes
