@@ -6,6 +6,7 @@
 //========================================================
 
 var bodyParser      = require('body-parser'),
+//    dotenv          = require('dotenv'),
     express         = require('express'),
     methodOverride  = require("method-override"),
     mysql           = require('mysql'),

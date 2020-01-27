@@ -85,7 +85,7 @@ router.post("/login", async function(req, res){
                 sessionData.user = {"id": rows[0].user_id,
                                     "name": rows[0].user_name
                                     };     
-                res.redirect('/dbtest');
+                res.redirect('/manage');
             }
             else {
                 res.send({

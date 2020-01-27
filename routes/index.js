@@ -55,24 +55,16 @@ router.post("/listings", function(req, res){
 //  MANAGE
 //=============
 
-router.get("/manage", function(req, res){
+router.get("/manage", sessionChecker, async function(req, res){
     console.log(res.locals.currentUser);
-     mysql.pool.getConnection(function (err, connection){
-    sql = "SELECT * FROM souls INNER JOIN users on souls.owner_id = users.id WHERE users.username ='" + res.locals.currentUser.username +"'" ;
-    console.log(sql);
-    connection.query(sql, function(err, result){
-        connection.release();
-        if(err){
-            throw err;
-        } else {
-            var obj = result;
-            console.log(obj);
-            res.render('manage', {obj: obj});
-        }
-    });
-    console.log("connected");
-    
-  });
+    sql = "SELECT * FROM souls INNER JOIN users on souls.owner_id = users.user_id WHERE users.user_name =?" ; 
+    try {
+        var rows = await pool.query(sql, [res.locals.currentUser.name]);
+        console.log(rows);
+        res.render('manage.ejs', {rows: rows});
+    } catch {
+        console.log(pool.err);
+    }
 });
 
 router.get("/manage/new", function(req, res){
@@ -103,5 +95,14 @@ router.post("/manage", function(req, res){
     });
     res.redirect("/manage");
 });
+
+//middleware to check for a session
+function sessionChecker(req, res, next){
+    if (req.session.user) {
+        next();
+    } else {
+    res.redirect('/login');
+    }    
+};
 
 module.exports = router;
