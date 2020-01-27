@@ -1,7 +1,5 @@
 var express = require("express");
 var router = express.Router();
-var passport = require("passport");
-var User = require("../models/user");
 var mysql = require('../dbcon.js');
 
 // AUTH ROUTES
@@ -20,36 +18,29 @@ router.post("/register", function(req, res){
             return res.render("register")
         }
         mysql.pool.getConnection(function (err, connection){
-            sql = "INSERT INTO users (username, first_name, last_name, created, modified, balance) VALUES (" + "'" + req.body.username + "'" + ",'" + req.body.first_name + "'" +",'" + req.body.last_name + "'" + ", NOW(), NOW(), 10000 )";
-            console.log(sql);
-            connection.query(sql, function(err, result){
-                if(err){
-                    throw err;
-                }
-                sql = "SELECT id FROM users where username = "+ "'" + req.body.username + "'";
-                connection.query(sql, function(err, result){
-                    if(err){
-                        throw err;
-                    } else {
-                        var obj = result;
-                        console.log(obj);
-                        sql = "INSERT INTO souls (soul_id, owner_id, soul_name, soul_score) VALUES (" + obj[0].id + "," + obj[0].id + ",'" + req.body.first_name + " " + req.body.last_name + "'," + 0 +")";
-                        console.log(sql);
-                        connection.query(sql, function(err, result){
-                            connection.release();
-                            if(err){
-                                throw err;
-                            } else {
-                                var obj = result;
-                                console.log(obj);
-                            }
-                        });
-                    }
-                });
-            });
-        });
-        passport.authenticate("local")(req, res, function(){
-            res.redirect("/");
+            sql = 'INSERT INTO users (user_name, first_name, last_name, password) VALUES (?,?,?,?)'
+            const newUser = await connection.query(sql, [username, firstname, lastname, password]); 
+            sql = 'SELECT * FROM users WHERE user_name = ?'
+            const userRecord = await connection.query(sql, [username]);
+            var obj = result;
+
+
+
+        //     connection.query(sql, , function(err, result, fields){
+        //     if(err){
+        //         throw err;
+        //     } else {
+        //         sql = 'INSERT INTO souls () VALUES()'
+        //         connection.query(sql, [username, firstname, lastname, password], function(err, result, fields){
+        //         if(err){
+        //             throw err;
+        //         } else {
+        //             var obj = result;
+        //             console.log(obj);
+        //             req.session.loggedin = true;
+        //             req.session.username = username;
+        //             res.redirect("/");
+        //         }
         });
     });
 });
