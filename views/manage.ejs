@@ -18,7 +18,7 @@
                 <ul>
                     <li><%= rows[i].soul_name %></li> 
                     <% if(rows[i].owner_id == rows[i].originator_id && rows[i].soul_score == 0) { %>
-                        <li><a href="/manage/new">Set Soul Ranking</a></li>
+                        <li><a href="/rank/<%=rows[i].soul_id%>">Set Soul Ranking</a></li>
                     <% } else { %>
                         <li>Ranking: <%= rows[i].soul_score %></li>
                     <% } %>

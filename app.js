@@ -42,11 +42,9 @@ app.use(function(req, res, next) {
 
 var authRoutes = require("./routes/auths");
 var indexRoutes = require("./routes/index");
-var listingRoutes = require("./routes/listings");
 
 app.use(authRoutes);
 app.use(indexRoutes);
-app.use(listingRoutes);
 
 app.listen(3000, function(){
     console.log("server running");

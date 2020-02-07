@@ -1,38 +1,39 @@
 <% include ./partials/header %>
 
+<% if(rows.length > 0){%>
   <div id="myCarousel" class="carousel slide" data-ride="carousel">
     <div class="carouselHeader"><h4>Ending Soon...</h4></div>
     <!-- Indicators -->
     <ol class="carousel-indicators">
-    <%  if(obj.length > 0) { %>
+    <%  if(rows.length > 0) { %>
         <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
     <% } %>
 
-    <%  for(var i = 1; i < 5 && i < obj.length; i++) { %>
+    <%  for(var i = 1; i < 5 && i < rows.length; i++) { %>
         <li data-target="#myCarousel" data-slide-to="<%=i%>"> </li>
     <% } %>
     </ol>
 
     <!-- Wrapper for slides -->
     <div class="carousel-inner">
-    <%  if(obj.length > 0) { %>
+    <%  if(rows.length > 0) { %>
       <div class="item active">
-        <img class="soulImage" src=<%= obj[i].default_img %> alt=<%= obj[i].soul_name %>>
+        <img class="soulImage" src=<%= rows[i].default_img %> alt=<%= rows[i].soul_name %>>
         <div class="carousel-caption">
-          <a class="carouselLink" href="/listings/<%= obj[i].listing_id %>"><h3><%= obj[i].soul_name %></h3></a>
-          <h4><%= obj[i].soul_score %></h4>
-          <p><%= obj[i].description%></p>
+          <a class="carouselLink" href="/listings/<%= rows[i].listing_id %>"><h3><%= rows[i].soul_name %></h3></a>
+          <h4><%= rows[i].soul_score %></h4>
+          <p><%= rows[i].description%></p>
         </div>
       </div>
     <% } %>
 
-    <%  for(var i = 1; i < 5 && i < obj.length; i++) { %>
+    <%  for(var i = 1; i < 5 && i < rows.length; i++) { %>
         <div class="item">
-            <img class="soulImage" src=<%= obj[i].default_img %> alt=<%= obj[i].soul_name %>>
+            <img class="soulImage" src=<%= rows[i].default_img %> alt=<%= rows[i].soul_name %>>
         <div class="carousel-caption">
-          <a class="carouselLink" href="/listings/<%= obj[i].listing_id %>"><h3><%= obj[i].soul_name %></h3></a>
-          <h4><%= obj[i].soul_score %></h4>
-          <p><%= obj[i].description%></p>
+          <a class="carouselLink" href="/listings/<%= rows[i].listing_id %>"><h3><%= rows[i].soul_name %></h3></a>
+          <h4><%= rows[i].soul_score %></h4>
+          <p><%= rows[i].description%></p>
         </div>
       </div>
     <% } %>
@@ -49,25 +50,26 @@
       <span class="sr-only">Next</span>
     </a>
   </div>
+<% } %>
 
 <!-- Main listings -->
 <h3>Available Souls!</h3>
-<% for(var i = 5; i < obj.length; i++){ %>
+<% for(var i = 5; i < rows.length; i++){ %>
     <div class='soulListing'>
         <div class = "listHeading">
             <div class="imgThumb">
-                <img src=<%= obj[i].default_img %> class="listImage" />
+                <img src=<%= rows[i].default_img %> class="listImage" />
             </div>
             <div class="soulName">
-                <a class="item" href="/listings/<%= obj[i].listing_id%>">
-                    <h3 class="listHead"><%= obj[i].soul_name %>: Soul Class: 
-                         <%= obj[i].soul_score %>
+                <a class="item" href="/listings/<%= rows[i].listing_id%>">
+                    <h3 class="listHead"><%= rows[i].soul_name %>: Soul Class: 
+                         <%= rows[i].soul_score %>
                     </h3>
                 </a>
-                <p class="desc"><%= obj[i].description %></p>
-                Current Bid: </strong><%= '$'+ (obj[i].currBidCents/100).toFixed(2) %>
+                <p class="desc"><%= rows[i].description %></p>
+                Current Bid: </strong><%= '$'+ (rows[i].currBidCents/100).toFixed(2) %>
             </div>
-            <div class="dt"> Ends: <%= obj[i].endDatetime %></div>
+            <div class="dt"> Ends: <%= rows[i].endDatetime %></div>
         </div>
         <hr>
     </div> 

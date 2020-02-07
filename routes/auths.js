@@ -16,6 +16,10 @@ var bodyParser  = require("body-parser"),
 //UPDATE    /dogs/:id   PUT         Update particular dog, then redirect somewhere
 //DESTROY   /dogs/:id   DELETE      remove one dog
 
+
+//==================================================================
+//Load registration form  
+//==================================================================
 router.get('/register', function(req, res){
     res.render('register.ejs');
 });
@@ -23,7 +27,6 @@ router.get('/register', function(req, res){
 //==================================================================
 //Register new users- built with asyn, await.  
 //==================================================================
-
 router.post('/register', async function(req, res){
     try{
         //insert new user into users table
@@ -61,12 +64,16 @@ router.post('/register', async function(req, res){
     };
 });
 
-//show login form
+//==================================================================
+//Load login form  
+//==================================================================
 router.get("/login", function(req, res){
     res.render("login.ejs");
 })
 
-//handle login logic
+//==================================================================
+//Login User and redirect to <SOMEWHERE>  
+//==================================================================
 router.post("/login", async function(req, res){
     var user_name = req.body.user_name;
     var password = req.body.password;
@@ -100,7 +107,9 @@ router.post("/login", async function(req, res){
     }
 });
 
-//logout route - destroys the session
+//==================================================================
+//Logout user, destroy session 
+//==================================================================
 router.get("/logout", function(req, res){
     var sessionData = req.session;
     sessionData.destroy(function(err) {
@@ -113,6 +122,7 @@ router.get("/logout", function(req, res){
     });
     res.redirect("/login");
 });
+
 
 //ASYNC AWAIT EXAMPLE WORKING WITH DB
 router.get('/dbtest', sessionChecker, async function(req, res){
