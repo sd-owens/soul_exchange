@@ -9,14 +9,15 @@
         <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
     <% } %>
 
-    <%  for(var i = 1; i < 5 && i < rows.length; i++) { %>
+    <%  for(var i = 0; i < 5 && i < rows.length; i++) { %>
         <li data-target="#myCarousel" data-slide-to="<%=i%>"> </li>
     <% } %>
     </ol>
 
     <!-- Wrapper for slides -->
     <div class="carousel-inner">
-    <%  if(rows.length > 0) { %>
+    <%  if(rows.length > 0) { 
+          var i = 0%>
       <div class="item active">
         <img class="soulImage" src=<%= rows[i].default_img %> alt=<%= rows[i].soul_name %>>
         <div class="carousel-caption">

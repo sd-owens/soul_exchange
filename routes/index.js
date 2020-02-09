@@ -19,7 +19,7 @@ var bodyParser  = require("body-parser"),
 //=====================
 
 router.get("/", async function(req, res){
-    res.redirect("/listings");
+    res.redirect("/index");
 });
 
 router.get("/about", function(req, res){
@@ -65,8 +65,9 @@ router.get("/manage", sessionChecker, async function(req, res){
 });
 
 router.get("/rank/:id", function(req, res){
-    console.log(id);
-    res.render("rank", id);
+    var soul_id = req.params.id
+    console.log(soul_id);
+    res.render("rank.ejs");
 });
 
 router.post("/manage", sessionChecker, async function(req, res){
@@ -88,13 +89,12 @@ router.post("/manage", sessionChecker, async function(req, res){
 //====================
 
 //get the list of listings
-router.get("/listings", async function(req, res){
+router.get("/index", async function(req, res){
     try {
         //get active soul listings
         sql = 'SELECT * FROM listings \
                 INNER JOIN listing_details l_d on l_d.listing_id = listings.listing_id \
-                INNER JOIN souls on souls.soul_id = l_d.soul_id \
-                WHERE start_datetime < NOW()';
+                INNER JOIN souls on souls.soul_id = l_d.soul_id;'
         var rows = await pool.query(sql);
         console.log(rows);
         res.render('index.ejs', {rows: rows});
@@ -106,37 +106,37 @@ router.get("/listings", async function(req, res){
 
 
 //get form to add a listing
-router.get("/listings/new", sessionChecker, function(req, res){
+router.get("/index/new", sessionChecker, function(req, res){
   //res.render("new.ejs");
 });
 
 //create listing
-router.post("/listings", sessionChecker, function(req, res){
+router.post("/index", sessionChecker, function(req, res){
     res.send("This will be where to submit new listings");
 });
 
 //edit listing
-router.get("/listings/:id/edit", sessionChecker, function(req, res){
+router.get("/index/:id/edit", sessionChecker, function(req, res){
     res.send("This will be where you go to edit an existing listing");
 });
 
 //UPDATE ROUTE
-router.put("/listings/:id", sessionChecker, function(req, res){
+router.put("/index/:id", sessionChecker, function(req, res){
     res.send("This will be where to submit edits to existing listings")
 });  //in form action ends with "?_method=PUT" and method="POST"
 
 //DESTROY ROUTE
-router.delete("/listings/:id", sessionChecker, function(req, res){
+router.delete("/index/:id", sessionChecker, function(req, res){
     res.send("DESTROY ROUTE");
 })  //in form action ends with "?_method=DELETE" and method="POST"
 
 //BID ROUTE
-router.put("/listings/:id/bid", sessionChecker, function(req, res){
+router.put("/index/:id/bid", sessionChecker, function(req, res){
     res.send("This is a put route for bidding on a listing");
 });
 
 //SHOW ROUTE
-router.get("/listings/:id", function(req, res){
+router.get("/index/:id", function(req, res){
     var listing = req.params.id
     mysql.pool.getConnection(function (err, connection){
         sql = "SELECT * FROM soul_listings LEFT JOIN souls on soul_listings.soul_id = souls.soul_id WHERE listing_id = " + listing;
