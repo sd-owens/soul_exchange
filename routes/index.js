@@ -64,19 +64,26 @@ router.get("/manage", sessionChecker, async function(req, res){
     }
 });
 
+//=============================================================================================
+//  Render form to rank soul (only accessible by originator, required prior to listing soul)
+//=============================================================================================
 router.get("/rank/:id", function(req, res){
     var soul_id = req.params.id
     console.log(soul_id);
-    res.render("rank.ejs");
+    res.render("rank.ejs", {soul_id: soul_id});
 });
 
+//=============================================================================================
+//  Updates soul ranking of a user and redirects to the manage page.
+//=============================================================================================
 router.post("/manage", sessionChecker, async function(req, res){
     console.log(res.locals.currentUser);
      try {
         var rank = Math.max(req.body.mortalSin, req.body.cardinalSin);
         console.log(rank);
-        // sql = "UPDATE souls SET soul_score = ? WHERE soul_id = ?";
-        // await pool.query(sql, [res.locals.currentUser])
+        console.log("req.body: " + req.body);
+        sql = "UPDATE souls SET soul_score = ? WHERE soul_id = ?";
+        await pool.query(sql, [rank, req.body.soul_id]);
 
         res.redirect("/manage");
     } catch {
