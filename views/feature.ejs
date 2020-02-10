@@ -1,49 +1,5 @@
 <% include ./partials/header %>
+
 <h3>Features Guide & Sources</h3>
-
-<h4>Where to find features that meet each requirement</h4>
-<ul>
-    <li>webpages should be presentable as a whole</li>
-    <li>The website should contain pictures or videos</li>
-    <li>Home page, 3 sub-pages, horizontal menu</li>
-    <li>Picture carousel - on home page</li>
-    <li>Have a scroll box in one page:
-        <ul>
-            <li>Found on user management page</li>
-            <li>It only has a scroll box if you own enough souls</li>
-            <li>To test scroll box, login with user: "Testing"; password "test", then click on the username in the the top menu</li>
-        </ul>
-    </li>
-    <li>Forms: Register an account to send a post request, login to an account to send a get request. Note: There is a soul ranking form as well, but I got fancy trying to use sliders and haven't yet figured out how to get the value from them when the post request is made. I assume having two working is sufficient and that I won't be penalized for the third not working.</li>
-    <li>Unordered lists...not counting this one, which is just for TA convenience, UL elements can be found on individual soul pages, as well as in the user management page</li>
-    <li>From the user management page (username in top menu), you can download a "soul certificate".  In order to get the download link, you must set the soul ranking for your soul. Note: there is currently a race-condition that will likely require a page refresh after submitting the soul ranking form.  The "Soul Certificate" itself is a pretty lame generic version, but eventually, I will have it generating a PDF with the information of the soul on it</li>
-    <li>Links to Wikipedia exist on the Soul ranking page (route: /manage/new), accessible from the user management page; There is also a "mailto:" link on the "Contact" page, where one can send me hate-mail.</li>
-    <li>Other allowed features:
-        <ul>
-            <li>MongoDB user registration and login managed with express-sessions and passport</li>
-            <li>MySQL database managing souls, non-login user-information, and soul listings in separate tables</li>
-            <li>EJS for view engine</li>
-            <li>Bootstrap for quite a bit of implementation--most of it working, except for the sliders in the "Cardinal Sin Index" form for setting a Soul Ranking.  For now, everyone gets rank 7, so we're all going to hell.</li>
-        </ul>
-    </li>
-    <li>A further requirement states that features must be functional...this isn't necessarily the case for all features of this page, but I didn't want to yank it all out, as I am intent of finishing up the incomplete features so this can be a nice portfolio piece. A list of incomplete features will be included below.</li>
-</ul>
-
-<h4>Incomplete & Oddly-Behaving Features</h4>
-<ul>
-    <li>Most conspicuous is that Bidding is not functional yet-- gross oversight for an auction platform, I know--and not, honestly, that much work to fix.  Maybe I'll have time to fix it before I submit the project, but it seems wrong to yank it out.</li>
-    <li>Currently no opportunity to reconcile winning bids exists and consequently souls do not yet change possession.  I have designed the system for that, but haven't yet implemented it.</li>
-    <li>The "List Soul" feature has not yet been implemented. It requires slightly more complexity than some other features, and I should probably spend some time making sure I can figure out how to migrate two different types of databases to the school servers, so that feature is taking a back seat.</li>
-    <li>I largely ignored async features to focus on getting as much done as possible.  As such, there are a couple race-conditions that will not be resolved until I make a pass to convert everything to async.  Most noticable is in setting the soul ranking, upon submitting the form and being redirected to the /manage route, the page is not usually updated to reflect the soul ranking until the page is again refreshed.</li>
-</ul>
-
-<h4>Sources</h4>
-<ul>
-    <li>The vast majority of the code was built  or modified from my work following tutorials or modifying projects I built while going through Colt Steele's <a href="https://www.udemy.com/course/the-web-developer-bootcamp/">Web Developer Bootcamp</a></li>
-    <li>Non-trivial additions were made using examples from the documentation for <a href="https://getbootstrap.com/docs/3.3/">bootstrap 3.3</a></li>
-    <li>The still non-functioning slider form was built from seiyria.com's <a href="https://seiyria.com/bootstrap-slider/#example-17"> Example 17B</a>.  Apparently, I can apply a .getValue() to them...but I haven't figured out the right syntax yet.</li>
-    <li>Vast untold smaller issues that couldn't easily be found in package documentation or on the MDN were resolved by reading through <a href="https://stackoverflow.com/">Stackoverflow</a> posts, the quantity and descriptions of which are too numerous to recount.</li> 
-    <li>Images were either acquired from NASA since they require no license, or were generated using <a href="https://www.npmjs.com/package/faker">npm faker</a>, which grants free license of use. In fact, the odd soul descriptions are a result of faker not having a more appropriate set of choices for generating features relating to human souls.</li>
-</ul>
 
 <% include ./partials/footer %>
