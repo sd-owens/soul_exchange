@@ -58,7 +58,7 @@ router.post('/register', async function(req, res){
         var sess                = req.session;      //initialize session variable
         req.session.user_id     = user_id;          //set user id
         req.session.user_name   = user_name;        //set user name
-        res.redirect('/dbtest');
+        res.redirect('/manage');
     } catch {
         console.log(pool.err);
     };

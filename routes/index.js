@@ -114,7 +114,7 @@ router.get("/index", async function(req, res){
 
 //get form to add a listing
 router.get("/index/new", sessionChecker, function(req, res){
-  //res.render("new.ejs");
+  res.render("newListing.ejs");
 });
 
 //create listing

@@ -1,5 +1,226 @@
 <% include ./partials/header %>
 
-<h3>Features Guide & Sources</h3>
+<h3>Features Guide for Reviews</h3>
+
+<p>Please <a href="/register">Sign up</a>. Then <a href="/login">login</a> and you will have access to your <a href="/manage">/manage</a> page.  Very few things work just yet. There is no bidding.  You can't yet create a listing, but you can create an account, and set your soul ranking. </p>
+
+By page:
+<table>
+	<tr>
+		<th>
+			Method&nbsp;&nbsp;&nbsp;
+		</th>
+		<th>Route</th>
+	</tr>
+<p></p>
+<tr>
+	<td valign="top">GET</td>
+	<td valign="top"><a href="/register">/register</a>	
+		<ul>
+			<li>Status: Functional</li>
+			<li>Displays a form to create a new user on "The Soul Exchange (tm)"</li>
+		</ul>
+			</td>
+</tr>
+		
+<tr>
+	<td valign="top">POST</td>
+	<td valign="top">/register
+		<ul>
+			<li>Status: Functional database features, redirect requires a session, which is not yet implemented for the register route.</li>
+			<li>Creates a new user in the users table and a corresponding soul in the souls table and redirects...somewhere</li>
+			<li>SQL Queries:<br/></li>
+			<li>//Create new user<br>
+			INSERT INTO users (user_name, first_name, last_name, password) VALUES (?,?,?,?)	</li>
+			<li>//Find new user's user_id<br>
+			SELECT user_id, user_name FROM users WHERE user_name = ?</li>
+			<li>//Create new soul entry associated with new user<br>
+			INSERT INTO souls (originator_id, owner_id, soul_name) VALUES (?,?,?)</li>
+		</ul>	
+	</td>
+</tr>
+	
+<tr>
+	<td valign="top">GET</td>
+	<td valign="top"><a href="/login">/login</a>	
+		<ul>
+			<li>Status: Functional</li>
+			<li>Displays a login form</li>
+		</ul>	
+	</td>
+</tr>
+
+<tr>
+	<td valign="top">POST</td>
+	<td valign="top">/login
+		<ul>
+			<li>Status: Functional</li>
+			<li>Creates a user session and allows access associate with a user account and redirects to the /manage route</li>
+			<li>SQL Queries:<br/>
+			//Find user by user_name and check password against what they entered.<br>
+			SELECT user_name, user_id, password from users WHERE user_name = ?</li>
+		</ul>
+	</td>
+</tr>
+	
+<tr>
+	<td valign="top">GET</td>
+	<td valign="top"><a href="/logout">/logout</a>
+		<ul>
+			<li>Status: Functional</li>
+			<li>Destroys the user's session, redirects to the login page.</li>
+		</ul>
+	</td>
+</tr>
+		
+<tr>
+	<td valign="top">GET</td>
+	<td valign="top"><a href="/">/</a>
+		<ul>
+			<li>Status: Functional</li>
+			<li>Redirects to /index</li>
+		</ul>
+	</td>
+</tr>
+		
+<tr>
+	<td valign="top">GET</td>
+	<td valign="top"><a href="/index">/index</a>
+		<ul>
+			<li>Status: Functional</li>
+			<li>Lists all souls up for auction on The Soul Exchange(tm)</li>
+			<li>SQL Queries:<br/>
+			SELECT * FROM listings \<br>
+                INNER JOIN listing_details l_d on l_d.listing_id = listings.listing_id \<br>
+                INNER JOIN souls on souls.soul_id = l_d.soul_id;</li>
+			<li>Note: Currently, the query doesn't limit listings to those that have started before NOW() and end after NOW()--which will be important later.</li>
+		</ul>
+    </td>
+</tr>
+		
+<tr>
+	<td valign="top">GET</td>
+	<td valign="top">/index/new
+		<ul>
+			<li>Status: To-do</li>
+			<li>A form for input details of a soul listing</li>
+		</ul>
+	</td>
+</tr>
+		
+<tr>
+	<td valign="top">POST</td>
+	<td valign="top">/index
+		<ul>
+			<li>Status: To-do</li>
+			<li>Creates a new entry in the listings table and corresponding entry in the listing_details table.</li>
+			<li>SQL Queries:<br/> (TBD--but it will be something like)<br>
+			//create listing entry<br>
+			INSERT INTO listings (seller_id, start_datetime, end_datetime) VALUES (?,?,?)<br>
+			//get id of new listing<br>
+			SELECT list_id from listings WHERE seller_id=? AND start_datetime=? AND end_datetime=?<br>
+			//create listing_details entry<br>
+			INSERT INTO listing_details (listing_id, soul_id, min_bid, description, default_img) VALUES (?,?,?,?,?)</li>
+			<li>Note: Current DB setup has listing_id as primary keys for both listings and listing_details.  This probably has to change so that listing_details.listing_id is a foreign key of listings--but then I don't know how that affects it as a primary key.  We'll figure that out.</li>
+		</ul>
+	</td>
+</tr>
+	
+<tr>
+	<td valign="top">GET</td>
+	<td valign="top">/index/:id
+		<ul>
+			<li>Status: In progress</li>
+			<li>Displays the record of a particular Soul at auction</li>
+			<li>SQL Queries:<br/>
+			SELECT * FROM listings INNER JOIN listing_details ld on ld.listing_id = listings.listing_id INNER JOIN souls on souls.soul_id = ld.soul_id WHERE listing_id = ?</li>
+		</ul>
+	</td>
+</tr>
+ 	
+<tr>
+	<td valign="top">GET</td>
+	<td valign="top">/index/:id/edit
+		<ul>
+			<li>Status: To-do</li>
+			<li>Loads a form for updating the contents of a soul listing.  It will need to load the content of the record</li>
+			<li>SQL Queries (TBD--but something like the following:)<br>
+			SELECT * FROM listings INNER JOIN listing_details ld on ld.listing_id = listings.listing_id WHERE listing_id = ?</li>
+		</ul>
+	</td>
+</tr>
+ 	
+<tr>
+	<td valign="top">PUT</td>
+	<td valign="top">/index/:id
+		<ul>
+			<li>Status: To-do</li>
+			<li>Updates records in the listings and listing_details tables</li>
+			<li>SQL Queries:<br/> (TBD)
+			Likely something like:<br>
+			INSERT INTO listings (start_datetime, end_datetime) VALUES (?,?)<br>
+			INSERT INTO listing_details (min_bid, description, default_img) VALUES (?,?,?)</li>
+		</ul>
+	</td>
+</tr>
+		
+<tr>
+	<td valign="top">DELETE</td>
+	<td valign="top">/index/:id
+		<ul>
+			<li>Status: To-do</li>
+			<li>Removes a listing from the listings and listing_details table</li>
+			<li>SQL Queries:<br/> (TBD)
+			REMOVE FROM listings where listing_id = ? <br>
+			REMOVE FROM listing_details where listing_id = ?</li>
+		</ul>
+	</td>
+</tr>
+ 	
+<tr>
+	<td valign="top">PUT</td>
+	<td valign="top">/index/:id/bid
+		<ul>
+			<li>Status: To-do</li>
+			<li>Adds a new bid to a listing.</li>
+			<li>SQL Queries:<br/> (assuming it is a high bid as enforced by some other logic) <br>
+			INSERT INTO listing_details (curr_bid, high_bidder) VALUES (?,?)</li>
+		</ul>
+	</td>
+</tr>
+<tr>
+	<td valign="top">GET</td>
+	<td valign="top"><a href="/manage">/manage</a>
+		<ul>
+			<li>Status: In progress</li>
+			<li>Displays a list of the souls owned by a user and offers different context-based soul-management options</li>
+			<li>SQL Queries:<br>
+				SELECT * FROM souls INNER JOIN users on souls.owner_id = users.user_id WHERE users.user_name =?
+			</li>
+		</ul>
+	</td>
+</tr>
+<tr>
+	<td valign="">GET</td>
+	<td valign="">/rank/:id
+		<ul>
+			<li>Status: Functional</li>
+			<li>Displays a form for setting the ranking of your soul before listing.</li>
+			<li>A soul ranking is required before you can list it for sale, and can only be done by the originator of the soul.</li>
+		</ul>
+	</td>
+</tr>
+<tr>
+	<td valign="top">POST</td>
+	<td valign="top">/manage
+		<ul>
+			<li>Status: Functional</li>
+			<li>Sets the soul_score of a soul</li>
+			<li>SQL Queries: <br> UPDATE souls SET soul_score = ? WHERE soul_id = ?</li>
+		</ul>
+	</td>
+</tr>
+
+</table> 
 
 <% include ./partials/footer %>
