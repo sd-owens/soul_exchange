@@ -14,6 +14,7 @@ var bodyParser      = require('body-parser'),
     pool            = require('./db'),
     session         = require('express-session'),
     util            = require('util'),
+    helmet          = require('helmet'),
     app             = express();
 
 app.use(
@@ -32,7 +33,6 @@ app.use(express.static(__dirname + '/public'));
 app.use(methodOverride("_method"));
 
 app.set("view engine", "ejs");
-
 
 // middleware to make 'user' available to all templates
 app.use(function(req, res, next) {

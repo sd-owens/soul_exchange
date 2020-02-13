@@ -34,16 +34,6 @@ router.get("/feature" ,function(req, res){
     res.render("feature");
 })
 
-//==============
-//  BID ROUTES
-//==============
-router.post("/listings", function(req, res){
-    //add bid to listing
-    //redirect 
-    res.redirect('/listings/:id');
-});
-
-
 //=============
 //  MANAGE
 //=============
@@ -67,7 +57,7 @@ router.get("/manage", sessionChecker, async function(req, res){
 //=============================================================================================
 //  Render form to rank soul (only accessible by originator, required prior to listing soul)
 //=============================================================================================
-router.get("/rank/:id", function(req, res){
+router.get("/rank/:id", sessionChecker, function(req, res){
     var soul_id = req.params.id
     console.log(soul_id);
     res.render("rank.ejs", {soul_id: soul_id});
@@ -110,16 +100,30 @@ router.get("/index", async function(req, res){
     };
 });
 
-
+//create listing
+router.post("/index", sessionChecker, function(req, res){
+    res.send("This will be where to submit new listings");
+});
 
 //get form to add a listing
 router.get("/index/new", sessionChecker, function(req, res){
   res.render("newListing.ejs");
 });
 
-//create listing
-router.post("/index", sessionChecker, function(req, res){
-    res.send("This will be where to submit new listings");
+//SHOW ROUTE
+router.get("/index/:id", async function(req, res){
+    res.set('Content-Security-Policy', "default-src 'self'");
+    try {
+        var listing = req.params.id;
+            //get active soul listings
+        var sql = 'SELECT * FROM listings INNER JOIN listing_details l_d on l_d.listing_id = listings.listing_id INNER JOIN souls on souls.soul_id = l_d.soul_id WHERE listings.listing_id = ?;'
+        console.log("LISTING_ID = " + listing);
+        var rows = await pool.query(sql, [listing]);
+        console.log(rows);
+        res.render('show.ejs', {rows: rows});
+    } catch {
+        console.log(pool.err);
+    }
 });
 
 //edit listing
@@ -137,28 +141,12 @@ router.delete("/index/:id", sessionChecker, function(req, res){
     res.send("DESTROY ROUTE");
 })  //in form action ends with "?_method=DELETE" and method="POST"
 
-//BID ROUTE
+
+//==============
+//  BID ROUTES
+//==============
 router.put("/index/:id/bid", sessionChecker, function(req, res){
     res.send("This is a put route for bidding on a listing");
-});
-
-//SHOW ROUTE
-router.get("/index/:id", function(req, res){
-    var listing = req.params.id
-    mysql.pool.getConnection(function (err, connection){
-        sql = "SELECT * FROM soul_listings LEFT JOIN souls on soul_listings.soul_id = souls.soul_id WHERE listing_id = " + listing;
-        //console.log(sql);
-        connection.query(sql, function(err, result){
-            connection.release();
-            if(err){
-                throw err;
-            } else {
-                var obj = result;
-                //console.log(obj);
-                res.render('show.ejs', {obj: obj});
-            }
-        });
-    });
 });
 
 //middleware to check for a session

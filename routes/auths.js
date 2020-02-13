@@ -99,7 +99,7 @@ router.post("/login", async function(req, res){
                     "code":204,"success":"User name and password do not match"});
             }
         } else {
-            res.send({"code":204,"success":"Email does not exist"});    
+            res.send({"code":204,"success":"User does not exist"});    
         }
     } catch {
         console.log(pool.err);
