@@ -2,32 +2,31 @@
 
 <h3>Details</h3>
 <ul> 
-    <li>User Name: <%=currentUser.username%></li>
-    <li>First Name: <%= obj[0].first_name %></li>
-    <li>Last Name: <%= obj[0].last_name %></li>
-    <li>Wallet Balance: <%= obj[0].balance %></li>
+    <li>User Name: <%= rows[0].user_name%></li>
+    <li>First Name: <%= rows[0].first_name %></li>
+    <li>Last Name: <%= rows[0].last_name %></li>
+    <li>Wallet Balance: <%= rows[0].balance %></li>
 </ul>
 
 <h3 id="manageSoulsHeader">Collected Souls</h3>
 <div class="manageSouls">
     <table>
-    <% for(var i = 0; i < obj.length; i++){ %>
+    <% for(var i = 0; i < rows.length; i++){ %>
         <tr>
-            <td><img src="<%= obj[i].avatar %>" class='leftImage'></td>
+            <td><img src="<%= rows[i].avatar %>" class='leftImage'></td>
             <td>
                 <ul>
-                    <li><%= obj[i].soul_name %></li> 
-                    <% if(obj[i].soul_score > 0 ){ %>
-                        <li>Ranking: <%= obj[i].soul_score %></li>
+                    <li><%= rows[i].soul_name %></li> 
+                    <% if(rows[i].owner_id == rows[i].originator_id && rows[i].soul_score == 0) { %>
+                        <li><a href="/rank/<%=rows[i].soul_id%>">Set Soul Ranking</a></li>
                     <% } else { %>
-                        <li><a href="/manage/new">Set Soul Ranking</a></li>
+                        <li>Ranking: <%= rows[i].soul_score %></li>
                     <% } %>
                 </ul>
-                <a class="btn btn-primary" role="button" href="/assets/img/soulCertificate.png" download=" <%= obj[i].soul_id %>.png ">
+                <a class="btn btn-primary" role="button" href="/assets/img/soulCertificate.png" download=" <%= rows[i].soul_id %>.png ">
                 <span class="glyphicon glyphicon-download-alt"></span> Certificate of Ownership</a>
-                <p class="projectNote"><strong>Note:</strong> Eventually, this would generate a PDF, but not yet.</p>
                 
-             <% if(obj[i].soul_score > 0 ){ %>
+             <% if(rows[i].soul_score > 0 ){ %>
                 <a class="btn btn-primary" href="#" ><span class="glyphicon glyphicon-tag"></span> List Soul</a>
             <% } %>
             </td>

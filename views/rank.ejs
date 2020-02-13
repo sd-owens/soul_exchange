@@ -11,7 +11,7 @@
 
 <h3>Ranking Methodology</h3>
 <p>
-    Soul Rankings range from 1 to 7 for Pure/Repentent to Damned respectively.  Rankings are determined using a "Mortal Sin" heuristic, whereby being in a state of Mortal Sin places you in Rank 7(Damned), until such time has you have revceived absolution. 
+    Soul Rankings range from 1 to 7 for Pure/Repentent to Damned respectively.  Rankings are determined using a "Mortal Sin" heuristic, whereby being in a state of Mortal Sin places you in Rank 7(Damned), until such time has you have received absolution. 
     <br /><a href="https://en.wikipedia.org/wiki/Mortal_sin">More Details.</a>
 </p> 
 
@@ -24,51 +24,16 @@
         <p>
             Are you currently in a state of Mortal Sin? 
         </p>
-        <input type="radio" name="mortalSin" value="1" checked="checked"> Yes
+        <input type="radio" name="mortalSin" value="7" checked="checked"> Yes
         <input type="radio" name="mortalSin" value="0"> No
         <p class="projectNote"><strong>Note:</strong> Everyone is in a state of Mortal Sin until I can get the Cardinal Sin sliders to submit values into a form--which is way harder than it should be. Expect your soul to achieve a rank of 7.  Have fun in hell...sinner!</p>
     </fieldset>  
-
-    <div class="cardinalSins">
-        <fieldset class="cardinalSin">
-            <legend>Cardinal Sins</legend>
-            <p>Please select a value for your propensity to engage in each cardinal sin: </p>
-            <label for="lust">
-                Lust<br />
-                <input id="lust" type="text"/>
-            </label>
-            <label for="gluttony">
-                Gluttony<br />
-                <input id="gluttony" type="text"/>
-            </label>
-            <label for="greed">
-                Greed<br />
-                <input id="greed" type="text"/>
-            </label>
-            <label for="sloth">
-                Sloth<br />
-                <input id="sloth" type="text"/>
-            </label>
-            <label for="wrath">
-                Wrath<br />
-                <input id="wrath" type="text"/>
-            </label>
-            <label for="envy">
-                Envy<br />
-                <input id="envy" type="text"/>
-            </label>
-            <label for="pride">
-                Pride<br />
-                <input id="pride" type="text"/>
-            </label>    
-        </fieldset> 
-        <fieldset class=submitForm>
-            <legend></legend>
-            <button class="btn btn-primary">submit</button>
-        </fieldset>
-        
-    </div>
-    
+    <fieldset class="rankSoul">
+        <legend>Soul Rank</legend>
+        <input name="cardinalSin" type="number" min="1" max="7">
+    </fieldset>
+    <input type="hidden" name="soul_id" id="soul_id" value = <%= soul_id%>>
+    <input type='submit'>
 </form>
 
 

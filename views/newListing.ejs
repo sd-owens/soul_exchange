@@ -1,0 +1,19 @@
+<% include ./partials/header %>
+
+<h3>Create Listing</h3>
+
+<label for="auction_start">Auction Start Date:</label>
+<input type="date" id="auction_start_date"
+       name="auction_start_date" required>
+
+<label for="appt">Start Time:</label>
+<input type="time" id="start_time" name="start_time" value="00:00" required>
+<br />
+<label for="auction_start">Auction End Date:&nbsp;</label>
+<input type="date" id="auction_end_date"
+       name="auction_end_date" required>
+
+<label for="appt">End Time:</label>
+<input type="time" id="end_time" name="end_time" value="00:00" required>
+
+<% include ./partials/footer %>

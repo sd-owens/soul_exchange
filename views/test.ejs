@@ -1,0 +1,13 @@
+<% include ./partials/header %>
+
+<h1>Test DB Output</h1>
+
+<ul> 
+    <li>User Name: <%= rows[0].user_name%></li>
+    <li>First Name: <%= rows[0].first_name %></li>
+    <li>Last Name: <%= rows[0].last_name %></li>
+</ul>
+
+<a href="/logout">Logout</a>
+
+<% include ./partials/footer %>
