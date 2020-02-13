@@ -105,9 +105,26 @@ router.post("/index", sessionChecker, function(req, res){
     res.send("This will be where to submit new listings");
 });
 
+//TODO
 //get form to add a listing
-router.get("/index/new", sessionChecker, function(req, res){
-  res.render("newListing.ejs");
+router.get("/new/:id", sessionChecker, async (req, res) => {
+  
+    try {
+
+        // let soul = req.params.id;
+        // console.log(soul);
+
+        let sql = 'SELECT * FROM souls WHERE soul_id =?';
+        let data = await pool.query(sql, req.params.id);
+        console.log(data);
+        res.render("newListing.ejs", {data: data});
+
+    } catch {
+
+        console.log(pool.err);
+    };
+            
+        
 });
 
 //SHOW ROUTE

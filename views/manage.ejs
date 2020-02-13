@@ -27,7 +27,13 @@
                 <span class="glyphicon glyphicon-download-alt"></span> Certificate of Ownership</a>
                 
              <% if(rows[i].soul_score > 0 ){ %>
-                <a class="btn btn-primary" href="#" ><span class="glyphicon glyphicon-tag"></span> List Soul</a>
+                <!-- <form action="/new/<%= rows[i].soul_id %>" method="GET">
+                    <input type="hidden" name="soul_id" value="<%= rows[i].soul_id %> ">
+                    <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-tag"></span> List Soul</button>
+                
+                </form> -->
+                <a class="btn btn-primary" href="/new/<%= rows[i].soul_id %> " ><span class="glyphicon glyphicon-tag"></span> List Soul</a>
+                
             <% } %>
             </td>
     <% } %>
