@@ -9,7 +9,7 @@
               </div>
               <div class="formGroup">
                      <br>
-                     <form action="" method="POST">
+                     <form action="/index" method="POST">
                             <label for="soul_name">Soul Name:</label>
                             <input type="text" id="soul_name" name="soul_name" value="<%= data[0].soul_name %> " readonly>
                             <br>
@@ -19,15 +19,15 @@
                             <br>
                      
                             <label for="auction_start">Start Date (required)</label>
-                            <input type="date" id="auction_start_date"
-                                   name="auction_start_date" required>
+                            <input type="date" id="start_date"
+                                   name="start_date" required>
                      
                             <label for="appt">Start Time (required)</label>
                             <input type="time" id="start_time" name="start_time" value="00:00" required>
                             <br />
                             <label for="auction_start">End Date (required)</label>
-                            <input type="date" id="auction_end_date"
-                                   name="auction_end_date" required>
+                            <input type="date" id="end_date"
+                                   name="end_date" required>
                      
                             <label for="appt">End Time (required)</label>
                             <input type="time" id="end_time" name="end_time" value="00:00" required>
@@ -38,8 +38,21 @@
 
                             <label for="description">Add a Description (optional)</label>
                             <input type="text" id="description" name="description" placeholder="Add an optional description for this lowly soul...">
-                     
+
+                            <!-- HIDDEN DATA -->
+                            <input type="hidden" name="soul_id" value="<%= data[0].soul_id %> ">
+                            <input type="hidden" name="owner_id" value="<%= data[0].owner_id %> "
+                            
+                            <label for="submit"></label>
+                            <div class="form-group">
+                                   <button name="submit" class="btn btn-large btn-danger">Submit</button>
+                            </div>
                      </form>
+                     <form action="/manage">
+                            <button class="btn btn-large btn-primary">Cancel</button>
+                     </form>
+                     
+                     
               </div>
        </div>
 </div>

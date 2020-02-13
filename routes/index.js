@@ -101,11 +101,27 @@ router.get("/index", async function(req, res){
 });
 
 //create listing
-router.post("/index", sessionChecker, function(req, res){
+router.post("/index", sessionChecker, async function(req, res){
+
+    let description = req.body.description;
+    let min_bid = req.body.min_bid;
+    let soul_id = req.body.soul_id;
+    let seller_id = req.body.owner_id;
+    let start_datetime = req.body.start_date + " " + req.body.start_time + ":00";
+    let end_datetime = req.body.end_date + " " + req.body.end_time + ":00";
+   
+    // Add new columns into listings table
+    let sql1 = "INSERT INTO listings VALUES(NULL, ?, ?, ?)";
+    await pool.query(sql1, [seller_id, start_datetime, end_datetime]);
+
+    // Return new listing_id from insertion.
+    let sql2 = 'SELECT listing_id FROM listings WHERE seller_id =?'
+    let response = await pool.query(sql2, [seller_id]);
+    console.log(response);
+
     res.send("This will be where to submit new listings");
 });
 
-//TODO
 //get form to add a listing
 router.get("/index/:id/new", sessionChecker, async (req, res) => {
   
@@ -113,7 +129,7 @@ router.get("/index/:id/new", sessionChecker, async (req, res) => {
 
         let sql = 'SELECT * FROM souls JOIN users ON souls.owner_id = users.user_id WHERE soul_id =?';
         let data = await pool.query(sql, req.params.id);
-        console.log(data);
+        // console.log(data);
         res.render("newListing.ejs", {data: data});
 
     } catch {
