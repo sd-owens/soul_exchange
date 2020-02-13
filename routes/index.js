@@ -107,14 +107,11 @@ router.post("/index", sessionChecker, function(req, res){
 
 //TODO
 //get form to add a listing
-router.get("/new/:id", sessionChecker, async (req, res) => {
+router.get("/index/:id/new", sessionChecker, async (req, res) => {
   
     try {
 
-        // let soul = req.params.id;
-        // console.log(soul);
-
-        let sql = 'SELECT * FROM souls WHERE soul_id =?';
+        let sql = 'SELECT * FROM souls JOIN users ON souls.owner_id = users.user_id WHERE soul_id =?';
         let data = await pool.query(sql, req.params.id);
         console.log(data);
         res.render("newListing.ejs", {data: data});

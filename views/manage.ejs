@@ -27,7 +27,7 @@
                 <span class="glyphicon glyphicon-download-alt"></span> Certificate of Ownership</a>
                 
              <% if(rows[i].soul_score > 0 ){ %>
-                <a class="btn btn-primary" href="/new/<%= rows[i].soul_id %> " ><span class="glyphicon glyphicon-tag"></span> List Soul</a>
+                <a class="btn btn-primary" href="/index/<%= rows[i].soul_id %>/new" ><span class="glyphicon glyphicon-tag"></span> List Soul</a>
                 
             <% } %>
             </td>
@@ -36,4 +36,3 @@
 </div>
 
 <% include ./partials/footer %>
-

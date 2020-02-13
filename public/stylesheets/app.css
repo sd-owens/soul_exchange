@@ -10,6 +10,16 @@ body {
 
 }
 
+.formGroup {
+    width: 60%;
+    clear: both;
+}
+
+.formGroup input {
+    width: 100%;
+    clear: both;
+}
+
 .navbar {
     border-radius: 10px;
     overflow: hidden;
@@ -66,7 +76,7 @@ legend {
 div.imgThumb {
     width: 100px;
     height: 100px;
-    margin: 0 10px;
+    margin: 10px 10px;
     object-fit: cover;
     overflow: hidden;
     border-radius: 50%;

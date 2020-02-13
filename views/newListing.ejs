@@ -1,19 +1,57 @@
 <% include ./partials/header %>
+<h3>Create New Listing</h3>
+<br>
+<div class="container">
+       <div class="soulListing">
+              <div class="imgThumb">
+                     <img src=<%= data[0].avatar %> class="listImage" />
+                     <br>
+              </div>
+              <div class="formGroup">
+                     <br>
+                     <form action="" method="POST">
+                            <label for="soul_name">Soul Name:</label>
+                            <input type="text" id="soul_name" name="soul_name" value="<%= data[0].soul_name %> " readonly>
+                            <br>
+                            
+                            <label for="owner_name">Owner Name:</label>
+                            <input type="text" id="owner_name" name="owner_name" value="<%= data[0].first_name %> <%= data[0].last_name %>" readonly>
+                            <br>
+                     
+                            <label for="auction_start">Start Date (required)</label>
+                            <input type="date" id="auction_start_date"
+                                   name="auction_start_date" required>
+                     
+                            <label for="appt">Start Time (required)</label>
+                            <input type="time" id="start_time" name="start_time" value="00:00" required>
+                            <br />
+                            <label for="auction_start">End Date (required)</label>
+                            <input type="date" id="auction_end_date"
+                                   name="auction_end_date" required>
+                     
+                            <label for="appt">End Time (required)</label>
+                            <input type="time" id="end_time" name="end_time" value="00:00" required>
+                            <br>
 
-<h3>Create Listing</h3>
+                            <label for="min_bid">Min. Bid (required)</label>
+                            <input type="number" id="min_bid: $" name="min_bid" value="1" min="" required>
 
-<label for="auction_start">Auction Start Date:</label>
-<input type="date" id="auction_start_date"
-       name="auction_start_date" required>
+                            <label for="description">Add a Description (optional)</label>
+                            <input type="text" id="description" name="description" placeholder="Add an optional description for this lowly soul...">
+                     
+                     </form>
+              </div>
+       </div>
+</div>
 
-<label for="appt">Start Time:</label>
-<input type="time" id="start_time" name="start_time" value="00:00" required>
-<br />
-<label for="auction_start">Auction End Date:&nbsp;</label>
-<input type="date" id="auction_end_date"
-       name="auction_end_date" required>
+<!-- <script>
+       var regex = /^[1-9]\d*(((,\d{3}){1})?(\.\d{0,2})?)$/;
+       var numStr = "123.20";
+       if (regex.test(numStr))
+       alert("Number is valid");
+</script> -->
 
-<label for="appt">End Time:</label>
-<input type="time" id="end_time" name="end_time" value="00:00" required>
+
+
 
 <% include ./partials/footer %>
