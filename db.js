@@ -7,9 +7,9 @@ var pool =  mysql.createPool({
                 connectionLimit: 10,
                 host: 'localhost',
                 user: 'root',
-                password: 'plethora of pinatas',
+                password: 'password',
                 database: 'soul_exchange_v2'
-            })
+            });
 
 pool.getConnection((err, connection) => {
     if (err) {
@@ -22,7 +22,12 @@ pool.getConnection((err, connection) => {
         if (err.code === 'ECONNREFUSED') {
             console.error('Database connection was refused.')
         }
-    }    if (connection) connection.release()    
+    } else {
+
+        console.log("Connected using pool!");
+    }
+    
+    if (connection) connection.release()    
     return
 })
 
