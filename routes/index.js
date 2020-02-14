@@ -93,40 +93,60 @@ router.get("/index", async function(req, res){
                 INNER JOIN listing_details l_d on l_d.listing_id = listings.listing_id \
                 INNER JOIN souls on souls.soul_id = l_d.soul_id;'
         var rows = await pool.query(sql);
-        console.log(rows);
+        //console.log(rows);
         res.render('index.ejs', {rows: rows});
     } catch {
         console.log(pool.err);
     };
 });
 
-//create listing
+// CREATE ROUTE
 router.post("/index", sessionChecker, async function(req, res){
 
-    let description = req.body.description;
-    let min_bid = req.body.min_bid;
-    let soul_id = req.body.soul_id;
-    let seller_id = req.body.owner_id;
-    let start_datetime = req.body.start_date + " " + req.body.start_time + ":00";
-    let end_datetime = req.body.end_date + " " + req.body.end_time + ":00";
-   
+    var description = req.body.description;
+    var min_bid = req.body.min_bid;
+    var soul_id = req.body.soul_id;
+    var seller_id = req.body.owner_id;
+    var start_datetime = req.body.start_date + " " + req.body.start_time + ":00";
+    var end_datetime = req.body.end_date + " " + req.body.end_time + ":00";
+
+    try {
+
     // Add new columns into listings table
-    let sql1 = "INSERT INTO listings VALUES(NULL, ?, ?, ?)";
+    var sql1 = "INSERT INTO listings VALUES(NULL, ?, ?, ?)";
     await pool.query(sql1, [seller_id, start_datetime, end_datetime]);
 
     // Return new listing_id from insertion.
-    let sql2 = 'SELECT listing_id FROM listings WHERE seller_id =?'
-    let response = await pool.query(sql2, [seller_id]);
-    console.log(response);
+    var sql2 = 'SELECT listing_id FROM listings WHERE seller_id =?'
+    var rows = await pool.query(sql2, [seller_id]);
+    var listing_id = rows[rows.length - 1].listing_id;
 
-    res.send("This will be where to submit new listings");
+    // Ensures only the last RowDataPacket is returned by Query
+    
+    console.log(rows[rows.length - 1]); 
+
+    //Update listing_detail to update many-to-many relationship.
+    var sql3 = 'INSERT INTO listing_details (listing_id, soul_id, min_bid, description) VALUES(?, ?, ?, ?)';
+    await pool.query(sql3, [listing_id, soul_id, min_bid, description]);
+
+    res.redirect("/index");
+
+    } catch {
+
+        console.log(pool.err);
+    }
+
+
+    
+
+    
 });
 
-//get form to add a listing
+// NEW ROUTE
 router.get("/index/:id/new", sessionChecker, async (req, res) => {
   
     try {
-
+        // pre-populate form to add new listing with soul_name and owner_name;
         let sql = 'SELECT * FROM souls JOIN users ON souls.owner_id = users.user_id WHERE soul_id =?';
         let data = await pool.query(sql, req.params.id);
         // console.log(data);
@@ -140,7 +160,7 @@ router.get("/index/:id/new", sessionChecker, async (req, res) => {
         
 });
 
-//SHOW ROUTE
+// SHOW ROUTE
 router.get("/index/:id", async function(req, res){
     res.set('Content-Security-Policy', "default-src 'self'");
     try {
@@ -156,17 +176,17 @@ router.get("/index/:id", async function(req, res){
     }
 });
 
-//edit listing
+// edit listing
 router.get("/index/:id/edit", sessionChecker, function(req, res){
     res.send("This will be where you go to edit an existing listing");
 });
 
-//UPDATE ROUTE
+// UPDATE ROUTE
 router.put("/index/:id", sessionChecker, function(req, res){
     res.send("This will be where to submit edits to existing listings")
 });  //in form action ends with "?_method=PUT" and method="POST"
 
-//DESTROY ROUTE
+// DESTROY ROUTE
 router.delete("/index/:id", sessionChecker, function(req, res){
     res.send("DESTROY ROUTE");
 })  //in form action ends with "?_method=DELETE" and method="POST"
