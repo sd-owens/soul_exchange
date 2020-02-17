@@ -9,7 +9,8 @@
               </div>
               <div class="formGroup">
                      <br>
-                     <form action="/index/<%= data[0].soul_id %>?_method=PUT" method="POST">
+                     <form action="/index/<%= data[0].listing_id %>?_method=PUT" method="POST">
+
                             <label for="soul_name">Soul Name:</label>
                             <input type="text" id="soul_name" name="soul_name" value="<%= data[0].soul_name %> " readonly>
                             <br>
@@ -43,12 +44,15 @@
                             <input type="hidden" name="owner_id" value="<%= data[0].seller_id %> ">
 
                             <div id="formButtons">
-                                   <button name="submit" class="btn btn-large btn-danger">Submit</button>
-                                   <a href="/manage" class="btn btn-large btn-primary" >Cancel</a>
+                                   <button id="submitListingButton" name="submit" class="btn btn-large btn-success">Submit</button>
+                                   <a id="cancelButton" href="/manage" class="btn btn-large btn-primary" >Cancel</a>
+                                   
                             </div>
-                            
-                            
                      </form>
+                     <form id="listing-delete" action="/index/<%= data[0].listing_id %>?_method=DELETE" method="POST">
+                            <button id="deleteListingButton" name="delete" class="btn btn-large btn-danger">DELETE LISTING</button>
+                     </form>
+                     
                      
                      
               </div>

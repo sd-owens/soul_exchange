@@ -29,7 +29,7 @@
              <% if(rows[i].soul_score > 0 ) { %>
 
 
-                <% if(rows[i].soul_score < 0 ) { %>
+                <% if(!rows[i].listing_id) { %>
 
                         <a class="btn btn-primary" href="/index/<%= rows[i].soul_id %>/new" ><span class="glyphicon glyphicon-tag"></span> List Soul</a>
 

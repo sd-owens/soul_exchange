@@ -22,7 +22,27 @@ body {
 }
 
 #formButtons {
+    display: inline-block;
     margin: 10px 0;
+    width: 100%;
+    border: 0;
+    padding: 0;
+}
+
+#submitListingButton, #cancelButton {
+    width: 49.5%;
+    border: 0;
+    margin: 0;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px black;
+}
+
+#deleteListingButton {
+    width: 100%;
+    display: block;
+    margin: 6px 0;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px black;
 }
 
 .navbar {
