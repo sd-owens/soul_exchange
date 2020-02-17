@@ -19,7 +19,7 @@
     <%  if(rows.length > 0) { 
           var i = 0%>
       <div class="item active">
-        <img class="soulImage" src=<%= rows[i].default_img %> alt=<%= rows[i].soul_name %>>
+        <img class="soulImage" src=<%= rows[i].default_img %> alt=<%= rows[i].soul_name %> >
         <div class="carousel-caption">
           <a class="carouselLink" href="/listings/<%= rows[i].listing_id %>"><h3><%= rows[i].soul_name %></h3></a>
           <h4><%= rows[i].soul_score %></h4>
@@ -30,7 +30,7 @@
 
     <%  for(var i = 1; i < 5 && i < rows.length; i++) { %>
         <div class="item">
-            <img class="soulImage" src=<%= rows[i].default_img %> alt=<%= rows[i].soul_name %>>
+            <img class="soulImage" src=<%= rows[i].default_img %> alt=<%= rows[i].soul_name %> >
         <div class="carousel-caption">
           <a class="carouselLink" href="/listings/<%= rows[i].listing_id %>"><h3><%= rows[i].soul_name %></h3></a>
           <h4><%= rows[i].soul_score %></h4>

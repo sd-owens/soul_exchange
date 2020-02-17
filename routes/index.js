@@ -44,7 +44,7 @@ router.get("/feature" ,function(req, res){
 router.get("/manage", sessionChecker, async function(req, res){
     console.log(res.locals.currentUser);
     console.log(req.body)
-    sql = "SELECT * FROM souls INNER JOIN users on souls.owner_id = users.user_id WHERE users.user_name =?" ; 
+    let sql = "SELECT * FROM souls INNER JOIN users on souls.owner_id = users.user_id WHERE users.user_name =?" ; 
     try {
         var rows = await pool.query(sql, [res.locals.currentUser.name]);
         // console.log(rows);
@@ -85,7 +85,7 @@ router.post("/manage", sessionChecker, async function(req, res){
 //Listing routes
 //====================
 
-//get the list of listings
+// INDEX ROUTE (RETURNS THE LIST OF CURRENT LISTINGS)
 router.get("/index", async function(req, res){
     try {
         //get active soul listings
@@ -100,7 +100,25 @@ router.get("/index", async function(req, res){
     };
 });
 
-// CREATE ROUTE
+// NEW LISTING ROUTE (DISPLAY FORM TO CREATE A NEW LISTING)
+router.get("/index/:id/new", sessionChecker, async (req, res) => {
+  
+    try {
+        // pre-populate form to add new listing with soul_name and owner_name;
+        let sql = 'SELECT * FROM souls JOIN users ON souls.owner_id = users.user_id WHERE soul_id =?';
+        let data = await pool.query(sql, req.params.id);
+        // console.log(data);
+        res.render("newListing.ejs", {data: data});
+
+    } catch {
+
+        console.log(pool.err);
+    };
+            
+        
+});
+
+// CREATE LISTING ROUTE (ADDS A NEW LISTING TO THE DATABASE)
 router.post("/index", sessionChecker, async function(req, res){
 
     var description = req.body.description;
@@ -142,25 +160,8 @@ router.post("/index", sessionChecker, async function(req, res){
     
 });
 
-// NEW ROUTE
-router.get("/index/:id/new", sessionChecker, async (req, res) => {
-  
-    try {
-        // pre-populate form to add new listing with soul_name and owner_name;
-        let sql = 'SELECT * FROM souls JOIN users ON souls.owner_id = users.user_id WHERE soul_id =?';
-        let data = await pool.query(sql, req.params.id);
-        // console.log(data);
-        res.render("newListing.ejs", {data: data});
-
-    } catch {
-
-        console.log(pool.err);
-    };
-            
-        
-});
-
-// SHOW ROUTE
+// TODO / VERIFY
+// SHOW LISTING ROUTE (SHOW INFORMATION ABOUT ONE LISTING)
 router.get("/index/:id", async function(req, res){
     res.set('Content-Security-Policy', "default-src 'self'");
     try {
@@ -176,13 +177,63 @@ router.get("/index/:id", async function(req, res){
     }
 });
 
-// edit listing
-router.get("/index/:id/edit", sessionChecker, function(req, res){
-    res.send("This will be where you go to edit an existing listing");
+// EDIT LISTING ROUTE (GETS FORM TO EDIT EXISTING LISTING)
+router.get("/index/:id/edit", sessionChecker, async function(req, res){
+
+    try {
+        //pre-populate form with existing listing data
+        let sql = 'SELECT s.soul_name, u.first_name, u.last_name, \
+        DATE_FORMAT(l.start_datetime, "%Y-%m-%d") AS start_date, \
+        TIME(l.start_datetime) AS start_time, \
+        DATE_FORMAT(l.end_datetime, "%Y-%m-%d") AS end_date, \
+        TIME(l.end_datetime) AS end_time, \
+        ld.min_bid, ld.description, s.soul_id, s.owner_id, s.avatar, ld.listing_id FROM listings l \
+        JOIN listing_details ld ON l.listing_id = ld.listing_id \
+        JOIN souls s ON s.soul_id = ld.soul_id \
+        JOIN users u ON u.user_id = l.seller_id \
+        WHERE ld.soul_id =?;';
+        let data = await pool.query(sql, req.params.id);
+        console.log(data);
+        res.render("editListing.ejs", {data: data});
+    } catch {
+
+        console.log(pool.err);
+    }
+
+    
 });
 
-// UPDATE ROUTE
-router.put("/index/:id", sessionChecker, function(req, res){
+// UPDATE LISTING ROUTE (POSTS UPDATED LISTING INFORMATINO TO THE DB)
+router.put("/index/:id", sessionChecker, async function(req, res){
+
+    var description = req.body.description;
+    var min_bid = req.body.min_bid;
+    var soul_id = req.body.soul_id;
+    var seller_id = req.body.owner_id;
+    var listing_id = req.body.listing_id;
+    var start_datetime = req.body.start_date + " " + req.body.start_time + ":00";
+    var end_datetime = req.body.end_date + " " + req.body.end_time + ":00";
+
+    try {
+
+        // Update exiting columns in listings table
+        var sql1 = 'UPDATE listings SET start_datetime =?, end_datetime =? WHERE listing_id =?'
+        await pool.query(sql1, [start_datetime, end_datetime, listing_id]);
+    
+        // Update existing columsn in listing_details table
+        var sql2 = 'UPDATE listing_details SET min_bid =?, description =? WHERE listing_id =?'
+        var rows = await pool.query(sql2, [min_bid, description, listing_id]);
+        
+        res.redirect("/index");
+    
+        } catch {
+    
+            console.log(pool.err);
+        }
+
+
+
+
     res.send("This will be where to submit edits to existing listings")
 });  //in form action ends with "?_method=PUT" and method="POST"
 

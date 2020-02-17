@@ -18,6 +18,11 @@ body {
 .formGroup input {
     width: 100%;
     clear: both;
+    margin: 10px 0;
+}
+
+#formButtons {
+    margin: 10px 0;
 }
 
 .navbar {
