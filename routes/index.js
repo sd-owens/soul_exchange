@@ -222,8 +222,8 @@ router.put("/index/:id", sessionChecker, async function(req, res){
         // Update existing columsn in listing_details table
         var sql2 = 'UPDATE listing_details SET min_bid =?, description =? WHERE listing_id =?'
         await pool.query(sql2, [min_bid, description, req.params.id]);
-        
-        res.redirect("/index");
+        var id = req.params.id;
+        res.redirect("/index/"+id, );
     
         } catch {
     
