@@ -44,13 +44,13 @@
                             <input type="hidden" name="owner_id" value="<%= data[0].seller_id %> ">
 
                             <div id="formButtons">
-                                   <button id="submitListingButton" name="submit" class="btn btn-large btn-success">Submit</button>
+                                   <button id="submitButton" name="submit" class="btn btn-large btn-success">Submit</button>
                                    <a id="cancelButton" href="/manage" class="btn btn-large btn-primary" >Cancel</a>
                                    
                             </div>
                      </form>
                      <form id="listing-delete" action="/index/<%= data[0].listing_id %>?_method=DELETE" method="POST">
-                            <button id="deleteListingButton" name="delete" class="btn btn-large btn-danger">DELETE LISTING</button>
+                            <button id="deleteListingButton" name="delete" class="btn btn-large btn-primary"> >>>  DELETE LISTING  <<< </button>
                      </form>
                      
               </div>
