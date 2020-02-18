@@ -262,13 +262,20 @@ router.delete("/index/:id", sessionChecker, async function(req, res){
 //==============
 router.put("/index/:id/bid", sessionChecker, async function(req, res){
     try {
+        // get the current high bid
+        sql1 = 'SELECT curr_bid FROM listing_details WHERE listing_id = ?';
+        rows = await pool.query(sql1, [req.params.id]);
+        console.log(rows);
         // update curr_bid and high_bidder when a logged in user places a bid.
-        sql = 'UPDATE listing_details SET curr_bid = ?, high_bidder = ? WHERE listing_id = ?';
         var curr_bid = req.body.bid;
         var high_bidder = req.session.user.id;
         var listing_id = req.params.id; 
-        //console.log(curr_bid, high_bidder, listing_id);
-        await pool.query(sql, [curr_bid, high_bidder, listing_id]);
+        console.log(curr_bid, rows[0].curr_bid);
+        if(curr_bid > rows[0].curr_bid){
+            sql2 = 'UPDATE listing_details SET curr_bid = ?, high_bidder = ? WHERE listing_id = ?';
+            //console.log(curr_bid, high_bidder, listing_id);
+            await pool.query(sql2, [curr_bid, high_bidder, listing_id]);    
+            }
         res.redirect("/index/"+listing_id);
     } catch {
         console.log(pool.err);
