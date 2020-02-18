@@ -1,5 +1,6 @@
 <% include ./partials/header %>
 
+
 <h3>Features Guide for Reviews</h3>
 
 <p>Please <a href="/register">Sign up</a>. Then <a href="/login">login</a> and you will have access to your <a href="/manage">/manage</a> page.  Very few things work just yet. There is no bidding.  You can't yet create a listing, but you can create an account, and set your soul ranking. </p>
@@ -91,11 +92,11 @@ By page:
 			<li>Lists all souls up for auction on The Soul Exchange(tm)</li>
 			<li>SQL Queries:<br/>
 			SELECT * FROM listings \<br>
-                INNER JOIN listing_details l_d on l_d.listing_id = listings.listing_id \<br>
-                INNER JOIN souls on souls.soul_id = l_d.soul_id;</li>
+				INNER JOIN listing_details l_d on l_d.listing_id = listings.listing_id \<br>
+				INNER JOIN souls on souls.soul_id = l_d.soul_id;</li>
 			<li>Note: Currently, the query doesn't limit listings to those that have started before NOW() and end after NOW()--which will be important later.</li>
 		</ul>
-    </td>
+	</td>
 </tr>
 		
 <tr>
@@ -137,7 +138,7 @@ By page:
 		</ul>
 	</td>
 </tr>
- 	
+		
 <tr>
 	<td valign="top">GET</td>
 	<td valign="top">/index/:id/edit
@@ -149,7 +150,7 @@ By page:
 		</ul>
 	</td>
 </tr>
- 	
+		
 <tr>
 	<td valign="top">PUT</td>
 	<td valign="top">/index/:id
@@ -176,7 +177,7 @@ By page:
 		</ul>
 	</td>
 </tr>
- 	
+		
 <tr>
 	<td valign="top">PUT</td>
 	<td valign="top">/index/:id/bid
@@ -222,5 +223,9 @@ By page:
 </tr>
 
 </table> 
+
+
+
+
 
 <% include ./partials/footer %>

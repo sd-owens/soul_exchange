@@ -26,14 +26,24 @@
                 <a class="btn btn-primary" role="button" href="/assets/img/soulCertificate.png" download=" <%= rows[i].soul_id %>.png ">
                 <span class="glyphicon glyphicon-download-alt"></span> Certificate of Ownership</a>
                 
-             <% if(rows[i].soul_score > 0 ){ %>
-                <a class="btn btn-primary" href="/new/<%= rows[i].soul_id %> " ><span class="glyphicon glyphicon-tag"></span> List Soul</a>
+             <% if(rows[i].soul_score > 0 ) { %>
+
+
+                <% if(!rows[i].listing_id) { %>
+
+                        <a class="btn btn-primary" href="/index/<%= rows[i].soul_id %>/new" ><span class="glyphicon glyphicon-tag"></span> List Soul</a>
+
+                    <% } else { %>
+
+                    <a class="btn btn-primary" href="/index/<%= rows[i].soul_id %>/edit" ><span class="glyphicon glyphicon-tag"></span> Edit Listing</a>
                 
+                    <% } %>
             <% } %>
             </td>
     <% } %>
     </table>
 </div>
 
-<% include ./partials/footer %>
 
+
+<% include ./partials/footer %>

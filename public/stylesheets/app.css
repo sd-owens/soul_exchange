@@ -4,10 +4,65 @@ body {
     letter-spacing: 1px;
     text-shadow: 2px 2px black;
     color: red;
-    background: #8E0E00;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #1F1C18, #8E0E00);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #1F1C18, #8E0E00); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: #660000;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #1F1C18, #660000);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #1F1C18, #660000); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
+}
+/* Wrapper class for feature and About Pages to keep Red Text Pull left to 75% of screen to keep it out of bright red gradient.*/
+.wrapper {
+    width: 75%;
+}
+
+.formGroup {
+    width: 50%;
+    clear: both;
+}
+
+.formGroup input {
+    width: 100%;
+    clear: both;
+    margin: 10px 0;
+}
+
+#formButtons {
+    display: inline-block;
+    margin: 10px 0;
+    width: 100%;
+    border: 0;
+    padding: 0;
+}
+
+.btn {
+    box-shadow: 0 8px 6px -6px black;
+}
+
+#submitButton, #cancelButton {
+    width: 49.5%;
+    border: 0;
+    margin: 0;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px black;
+    background-color: #8E0E00;
+    border: #8E0E00;
+    box-shadow: 0 8px 6px -6px black;
+}
+
+#cancelButton {
+    background-color: #888888;
+    border: #888888;
+
+}
+
+#deleteListingButton {
+    width: 100%;
+    display: block;
+    margin: 6px 0;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px black;
+    background-color: #333333;
+    border: #333333;
+    box-shadow: 0 8px 6px -6px black;
 }
 
 .navbar {
@@ -66,7 +121,7 @@ legend {
 div.imgThumb {
     width: 100px;
     height: 100px;
-    margin: 0 10px;
+    margin: 10px 10px;
     object-fit: cover;
     overflow: hidden;
     border-radius: 50%;
@@ -177,6 +232,7 @@ p.projectNote{
     overflow:auto;
     background-color: #333333;
     color:white;
+    box-shadow: 0 8px 6px -6px black;
 }
 
 
