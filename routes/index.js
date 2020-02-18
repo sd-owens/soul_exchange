@@ -156,7 +156,6 @@ router.post("/index", sessionChecker, async function(req, res){
     
 });
 
-// TODO / VERIFY
 // SHOW LISTING ROUTE (SHOW INFORMATION ABOUT ONE LISTING ???)
 router.get("/index/:id", async function(req, res){
     try {
@@ -189,7 +188,7 @@ router.get("/index/:id/edit", sessionChecker, async function(req, res){
         WHERE ld.soul_id =?;';
 
         let data = await pool.query(sql, req.params.id);
-        console.log(data);
+        //console.log(data);
         res.render("editListing.ejs", {data: data});
 
     } catch {
@@ -261,8 +260,19 @@ router.delete("/index/:id", sessionChecker, async function(req, res){
 //==============
 //  BID ROUTES
 //==============
-router.put("/index/:id/bid", sessionChecker, function(req, res){
-    res.send("This is a put route for bidding on a listing");
+router.put("/index/:id/bid", sessionChecker, async function(req, res){
+    try {
+        // update curr_bid and high_bidder when a logged in user places a bid.
+        sql = 'UPDATE listing_details SET curr_bid = ?, high_bidder = ? WHERE listing_id = ?';
+        var curr_bid = req.body.bid;
+        var high_bidder = req.session.user.id;
+        var listing_id = req.params.id; 
+        //console.log(curr_bid, high_bidder, listing_id);
+        await pool.query(sql, [curr_bid, high_bidder, listing_id]);
+        res.redirect("/index/"+listing_id);
+    } catch {
+        console.log(pool.err);
+    }
 });
 
 //middleware to check for a session
