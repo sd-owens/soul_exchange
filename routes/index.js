@@ -159,7 +159,6 @@ router.post("/index", sessionChecker, async function(req, res){
 // TODO / VERIFY
 // SHOW LISTING ROUTE (SHOW INFORMATION ABOUT ONE LISTING ???)
 router.get("/index/:id", async function(req, res){
-    res.set('Content-Security-Policy', "default-src 'self'");
     try {
         var listing = req.params.id;
         //get active soul listings
