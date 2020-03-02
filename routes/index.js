@@ -127,7 +127,7 @@ router.get("/index", async function(req, res){
         //get active soul listings
         sql = 'SELECT * FROM listings l \
                JOIN listing_details ld on ld.listing_id = l.listing_id \
-               JOIN souls s ON s.soul_id = ld.soul_id;'
+               JOIN souls s ON s.soul_id = ld.soul_id WHERE l.start_datetime < NOW() AND l.end_datetime > NOW() AND NOT l.archived;'
         var rows = await pool.query(sql);
         //console.log(rows);
         res.render('index.ejs', {rows: rows});
