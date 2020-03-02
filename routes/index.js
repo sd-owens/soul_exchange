@@ -193,11 +193,14 @@ router.get("/index/:id", async function(req, res){
     try {
         var listing = req.params.id;
         //get active soul listings
-        var sql = 'SELECT * FROM listings INNER JOIN listing_details l_d on l_d.listing_id = listings.listing_id INNER JOIN souls on souls.soul_id = l_d.soul_id WHERE listings.listing_id = ?;'
+        var sql = 'SELECT * FROM listings INNER JOIN listing_details l_d on l_d.listing_id = listings.listing_id INNER JOIN souls on souls.soul_id = l_d.soul_id WHERE listings.listing_id = ? AND listings.start_datetime < NOW() and listings.end_datetime > NOW() AND NOT listings.archived;'
         console.log("LISTING_ID = " + listing);
         var rows = await pool.query(sql, [listing]);
         console.log(rows);
-        res.render('show.ejs', {rows: rows});
+        if(rows.length > 0){
+            res.render('show.ejs', {rows: rows});    
+        }
+        res.redirect('/index');
     } catch {
         console.log(pool.err);
     }
