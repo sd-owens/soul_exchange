@@ -47,11 +47,24 @@ router.get("/manage", sessionChecker, async function(req, res){
                 JOIN users u ON s.owner_id = u.user_id \
                 LEFT JOIN listings l ON l.seller_id = u.user_id \
                 WHERE u.user_name =?'; 
-
+    let sqlTxn = 'SELECT * FROM listings l \
+                JOIN listing_details ld on l.listing_id = ld.listing_id \
+                JOIN souls s on s.soul_id = ld.soul_id \
+                WHERE l.end_datetime < NOW() \
+                AND ld.high_bidder = ? \
+                AND NOT l.archived';
+    let sqlListings = 'SELECT *, unix_timestamp(end_datetime) * 1000 endUTX \
+                FROM listings l \
+                JOIN listing_details ld on l.listing_id = ld.listing_id \
+                JOIN souls s on s.soul_id = ld.soul_id \
+                WHERE l.seller_id = ? AND NOT l.archived';
     try {
-        var rows = await pool.query(sql, [res.locals.currentUser.name]);
-        // console.log(rows);
-        res.render('manage.ejs', {rows: rows});
+        let rows = await pool.query(sql, [res.locals.currentUser.name]);
+        let txns = await pool.query(sqlTxn, [res.locals.currentUser.id]);
+        let lst = await pool.query(sqlListings, [res.locals.currentUser.id]);
+        console.log(txns);
+        console.log(lst);
+        res.render('manage.ejs', {rows: rows, txns: txns, lst: lst});
     } catch {
         console.log(pool.err);
     }
@@ -137,26 +150,21 @@ router.get("/index", async function(req, res){
 });
 
 // NEW LISTING ROUTE (DISPLAY FORM TO CREATE A NEW LISTING) <--- (:ID here is soul to be listed, NOT listing_id since it does not exist yet)
-router.get("/index/:id/new", sessionChecker, async (req, res) => {
-  
+router.get("/index/:id/new", sessionChecker, async function(req, res){
     try {
         // pre-populate form to add new listing with soul_name and owner_name;
         let sql = 'SELECT * FROM souls JOIN users ON souls.owner_id = users.user_id WHERE soul_id =?';
         let data = await pool.query(sql, req.params.id);
         // console.log(data);
         res.render("newListing.ejs", {data: data});
-
     } catch {
-
         console.log(pool.err);
     };
-            
-        
 });
 
 // CREATE LISTING ROUTE (ADDS A NEW LISTING TO THE DATABASE)
 router.post("/index", sessionChecker, async function(req, res){
-
+    console.log(req.body);
     var description = req.body.description;
     var min_bid = req.body.min_bid;
     var soul_id = req.body.soul_id;
@@ -165,27 +173,22 @@ router.post("/index", sessionChecker, async function(req, res){
     var end_datetime = req.body.end_date + " " + req.body.end_time + ":00";
 
     try {
-
     // Add new columns into listings table
-    var sql1 = "INSERT INTO listings VALUES(NULL, ?, ?, ?)";
-    await pool.query(sql1, [seller_id, start_datetime, end_datetime]);
+        var sql1 = "INSERT INTO listings (seller_id, start_datetime, end_datetime) VALUES(?, ?, ?)";
+        await pool.query(sql1, [seller_id, start_datetime, end_datetime]);
 
     // Return new listing_id from insertion.
-    var sql2 = 'SELECT listing_id FROM listings WHERE seller_id =?'
-    var rows = await pool.query(sql2, [seller_id]);
-    var listing_id = rows[rows.length - 1].listing_id;
+        var sql2 = 'SELECT listing_id FROM listings WHERE seller_id =?'
+        var rows = await pool.query(sql2, [seller_id]);
+        var listing_id = rows[rows.length - 1].listing_id;
 
     //Update listing_detail to update many-to-many relationship.
-    var sql3 = 'INSERT INTO listing_details (listing_id, soul_id, min_bid, description) VALUES(?, ?, ?, ?)';
-    await pool.query(sql3, [listing_id, soul_id, min_bid, description]);
-
-    res.redirect("/index");
-
+        var sql3 = 'INSERT INTO listing_details (listing_id, soul_id, min_bid, description) VALUES(?, ?, ?, ?)';
+        await pool.query(sql3, [listing_id, soul_id, min_bid, description]);
+        res.redirect("/index");
     } catch {
-
         console.log(pool.err);
-    }
-    
+    } 
 });
 
 // SHOW LISTING ROUTE (SHOW INFORMATION ABOUT ONE LISTING ???)
@@ -229,9 +232,7 @@ router.get("/index/:id/edit", sessionChecker, async function(req, res){
     } catch {
 
         console.log(pool.err);
-    }
-
-    
+    }  
 });
 
 // UPDATE LISTING ROUTE (POSTS UPDATED LISTING INFORMATINO TO THE DB) (:ID here is the listing_id from listings table)
@@ -316,6 +317,22 @@ router.put("/index/:id/bid", sessionChecker, async function(req, res){
         console.log(pool.err);
     }
 });
+
+//=================================================
+// REVOKE ROUTE - Cancel a past-due auction listing
+//=================================================
+router.post("/revoke/:id", sessionChecker, async function(req, res){
+    try {
+        sql1 = 'UPDATE listing_details SET curr_bid = 0, high_bidder = NULL WHERE listing_id = ?';
+        sql2 = 'UPDATE listings SET archived = 1 WHERE listing_id = ?';
+        await pool.query(sql1, [req.params.id]);
+        await pool.query(sql2, [req.params.id]);
+        res.redirect("/manage");
+    } catch {
+        console.log(pool.err);
+    }
+});
+
 
 //middleware to check for a session
 function sessionChecker(req, res, next){

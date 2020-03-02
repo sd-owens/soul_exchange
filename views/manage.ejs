@@ -8,6 +8,65 @@
     <li>Wallet Balance: <%= rows[0].balance %><br /><a class="btn btn-primary btn-sm" role="button" href="/wallet"><span class="glyphicon glyphicon-usd"></span> Add Funds to Wallet</a></li>
 </ul>
 
+<% if(txns.length > 0){ %>
+    <h3 id="txns">You Won!</h3>
+    <p>Complete your purchase(s)</p>
+    <table>
+    <% for (var i = 0; i < txns.length; i++){ %>
+        <tr>
+            <td><img src="<%= txns[i].avatar %>" class='leftImage'></td>
+            <td>
+                <ul>
+                    <li><%= txns[i].soul_name %></li> 
+                    <li>Ranking: <%= txns[i].soul_score %></li>
+                    <li><%= txns[i].description %></li>
+                    <li>Winning Bid: <%= txns[i].curr_bid %></li>
+                </ul>
+            </td>
+            <td><% if(txns[i].curr_bid > rows[0].balance){ %>
+                &nbsp;<a class="btn btn-primary btn-sm" role="button" href="/wallet"><span class="glyphicon glyphicon-usd"></span>Add Funds</a>
+                <% } else { %>
+                &nbsp;<a class="btn btn-primary btn-sm" role="button" href=""><span class="glyphicon glyphicon-usd"></span>Pay Now</a>
+                <% } %>
+            </td>
+        </tr>
+    <%}%>
+</table>
+<% }%>
+
+
+
+<% if(lst.length > 0) {%>
+    <h3 id="activeListings">Active Listings</h3>
+    <table>
+    <% for (var i = 0; i < lst.length; i++){ %>
+        <tr>
+            <td>
+                <% if(lst[i].avatar){ %>
+                    <img src="<%= lst[i].avatar %>" class='leftImage'>
+                <% } %>
+            </td>
+            <td>
+                <ul>
+                    <li><%= lst[i].soul_name %></li> 
+                    <li>Ranking: <%= lst[i].soul_score %></li>
+                    <li><%= lst[i].description %></li>
+                    <% if(lst[i].curr_bid){ %>
+                        <li>High Bid: <%= lst[i].curr_bid %></li>
+                    <% } %>
+                    <% if(lst[i].endUTX < Date.now() - 259200) { %>
+                     <li><form action="/revoke/:id" method="POST">
+                         This listing is past due <a class="btn btn-primary" href="/revoke/<%=lst[i].listing_id%>" ><span class="glyphicon glyphicon-remove"></span> Revoke</a>
+                     </form></li>
+                     <% } %>
+                </ul>
+            </td>
+        </tr>
+    <% } %>  
+    </table>
+<% } %>
+
+
 <h3 id="manageSoulsHeader">Collected Souls</h3>
 <div class="manageSouls">
     <table>
@@ -40,6 +99,7 @@
                     <% } %>
             <% } %>
             </td>
+        </tr>
     <% } %>
     </table>
 </div>
