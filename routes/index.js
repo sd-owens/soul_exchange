@@ -43,7 +43,6 @@ router.get("/feature" ,function(req, res){
 //=============================================================================================
 router.get("/manage", sessionChecker, async function(req, res){
     console.log(res.locals.currentUser);
-    console.log(req.body)
     let sql = 'SELECT * FROM souls s \
                 JOIN users u ON s.owner_id = u.user_id \
                 LEFT JOIN listings l ON l.seller_id = u.user_id \
@@ -84,6 +83,39 @@ router.post("/manage", sessionChecker, async function(req, res){
         console.log(pool.err);
     }
 });
+
+//=============================================================================================
+//  Added funds to a User's wallet and redirects to the Manage page.
+//=============================================================================================
+router.post("/manage/wallet", sessionChecker, async function(req, res){
+    console.log(res.locals.currentUser);
+    console.log(req.body.newFunds);
+     try {
+        sql1 = "SELECT balance FROM users WHERE user_id = ?";
+        var rows = await pool.query(sql1, [res.locals.currentUser.id]);
+        console.log(rows);
+        if(!rows[0].balance){
+            var newBalance = parseInt(req.body.newFunds);
+        }
+        else{
+            var newBalance = rows[0].balance + parseInt(req.body.newFunds);    
+        }
+        console.log(newBalance);
+        sql2 = "UPDATE users SET balance = ? WHERE user_id = ?";
+        await pool.query(sql2, [newBalance, res.locals.currentUser.id]);
+        res.redirect("/manage");
+    } catch {
+        console.log(pool.err);
+    }
+});
+
+//=============================================================================================
+//  GET form to add funds to wallet
+//=============================================================================================
+router.get("/wallet", sessionChecker, function(req, res){
+    res.render("addFunds.ejs");
+});
+
 
 //====================
 //Listing routes
