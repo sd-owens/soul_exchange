@@ -26,7 +26,7 @@
             <td><% if(txns[i].curr_bid > rows[0].balance){ %>
                 &nbsp;<a class="btn btn-primary btn-sm" role="button" href="/wallet"><span class="glyphicon glyphicon-usd"></span>Add Funds</a>
                 <% } else { %>
-                &nbsp;<a class="btn btn-primary btn-sm" role="button" href=""><span class="glyphicon glyphicon-usd"></span>Pay Now</a>
+                &nbsp;<a class="btn btn-primary btn-sm" role="button" href="/pay/<%=txns[i].listing_id%>"><span class="glyphicon glyphicon-usd"></span>Pay Now</a>
                 <% } %>
             </td>
         </tr>
@@ -55,9 +55,9 @@
                         <li>High Bid: <%= lst[i].curr_bid %></li>
                     <% } %>
                     <% if(lst[i].endUTX < Date.now() - 259200) { %>
-                     <li><form action="/revoke/:id" method="POST">
+                     <li>
                          This listing is past due <a class="btn btn-primary" href="/revoke/<%=lst[i].listing_id%>" ><span class="glyphicon glyphicon-remove"></span> Revoke</a>
-                     </form></li>
+                 </li>
                      <% } %>
                 </ul>
             </td>

@@ -319,8 +319,81 @@ router.put("/index/:id/bid", sessionChecker, async function(req, res){
 });
 
 //=================================================
+//  PAY ROUTES
+//=================================================
+
+//Pay form
+router.get("/pay/:id", sessionChecker, async function(req, res){
+    try{
+        sql = 'SELECT * FROM listings l INNER JOIN listing_details ld on ld.listing_id = l.listing_id INNER JOIN souls s on s.soul_id = ld.soul_id WHERE high_bidder = ? AND l.listing_id = ?';    
+        var high_bidder = req.session.user.id;
+        var listing_id = req.params.id;
+        rows = await pool.query(sql, [high_bidder, listing_id]);
+        if(rows.length > 0){
+            res.render("pay.ejs", {rows: rows});
+        } else {
+            res.redirect("/manage");
+        }
+
+    } catch {
+        console.log(pool.err);
+    }
+});
+
+//Create route for payment
+router.post("/pay/:id", sessionChecker, async function(req, res){
+    try{
+        sql1 = 'SELECT balance FROM users WHERE user_id = ?'; //how much money does the current user have?
+        var user_id = req.session.user.id;
+        rows = await pool.query(sql1, [user_id]);
+        console.log(rows);
+        var availableFunds = rows[0].balance;
+        sql2 = 'SELECT curr_bid, soul_id FROM listing_details ld WHERE ld.listing_id = ?'; //How much was the winning bid?
+        var listing_id = req.params.id;
+        rows = await pool.query(sql2, [listing_id]);
+        var curr_bid = rows[0].curr_bid;
+        var soul_id = rows[0].soul_id;
+        if(availableFunds >= curr_bid){     //Has funds to pay for bid
+            sql3 = 'SELECT seller_id FROM listings l WHERE l.listing_id = ?'; //get user_id of seller
+            rows = await pool.query(sql3, [listing_id]);
+            var seller_id = rows[0].seller_id;
+            sql4 = 'UPDATE users SET balance = balance + ? WHERE user_id = ?'; //update user record for seller (add funds)
+            await pool.query(sql4, [curr_bid, seller_id])
+            sql5 = 'UPDATE users SET balance = balance - ? WHERE user_id = ?'; //Remove funds from current user
+            await pool.query(sql5, [curr_bid, user_id]);
+            sql6 = 'UPDATE souls SET owner_id = ? WHERE soul_id = ?'; //Add soul to current user
+            await pool.query(sql6, [user_id, soul_id]);
+            sql7 = 'UPDATE listings l SET archived = 1 WHERE l.listing_id = ?'//archive listing
+            await pool.query(sql7, [listing_id]);
+            res.redirect("/manage");
+        } else {
+            res.redirect("/manage"); //TODO: add alert for insufficient funds
+        }
+    } catch {
+        console.log(pool.err);
+    }
+});
+
+
+
+//=================================================
 // REVOKE ROUTE - Cancel a past-due auction listing
 //=================================================
+router.get("/revoke/:id", sessionChecker, async function(req, res){
+    try{
+        sql = 'SELECT * FROM listings l INNER JOIN listing_details ld on ld.listing_id = l.listing_id INNER JOIN souls s on s.soul_id = ld.soul_id WHERE owner_id = ? AND l.listing_id = ?';    
+        var owner_id = req.session.user.id;
+        var listing_id = req.params.id;
+        rows = await pool.query(sql, [owner_id, listing_id]);
+        console.log("query finished:");
+        console.log(rows);
+        res.render("revoke.ejs", {rows});
+    } catch {
+        console.log(pool.err);
+    }
+
+});
+
 router.post("/revoke/:id", sessionChecker, async function(req, res){
     try {
         sql1 = 'UPDATE listing_details SET curr_bid = 0, high_bidder = NULL WHERE listing_id = ?';

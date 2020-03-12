@@ -1,0 +1,39 @@
+<% include ./partials/header %>
+
+<h3>Revoke Soul</h3>
+<br>
+<div class="container">
+	<div class="soulEntry"> 
+        <div class="soul">
+            <div class="circleAvatar">
+                <img class="avatar" src=<%= rows[0].avatar %> />
+            </div>
+            <div class="soulText">
+               <div class="soul_name">Name: <%= rows[0].soul_name %></div>
+                <div class="soulScore">Rank: <%= rows[0].soul_score %></div>
+                <div class="soulDescription">Description: <%= rows[0].description %></div> 
+            </div>
+        </div>
+    </div>
+	<form action="/revoke/<%= rows[0].listing_id %>" method="POST">
+		<%= parseInt(rows[0].curr_bid)%>.00 <button class="btn btn-primary btn-sm">Revoke</button>
+	<h3>DIAGNOSTICS SECTION</h3>
+	<ul>
+		<li>listing_id: <%= rows[0].listing_id %></li>
+	    <li>soul_id: <%= rows[0].soul_id %></li>
+	    <li>seller_id: <%= rows[0].seller_id %></li>
+	    <li>start_datetime: <%= rows[0].start_datetime %></li>
+	    <li>end_datetime: <%= rows[0].end_datetime %></li>
+	    <li>min_bid: <%= rows[0].min_bid %></li>
+	    <li>curr_bid: <%= rows[0].curr_bid %></li>
+	    <li>high_bidder: <%= rows[0].high_bidder %></li>
+	    <li>description: <%= rows[0].description %></li>
+	    <li>default_img: <%= rows[0].default_img %></li>
+	    <li>owner_id: <%= rows[0].owner_id %></li>
+	    <li>soul_name: <%= rows[0].soul_name %></li>
+	    <li>soul_score: <%= rows[0].soul_score %></li>
+	    <li>avatar: <%= rows[0].avatar %></li>
+	</ul>
+</div>
+
+<% include ./partials/footer %>
