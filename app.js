@@ -23,7 +23,7 @@ app.use(
         secret: '@2f6d4hNF.;LjyE=',
         resave: true,
         saveUninitialized: true,
-        cookie: { maxAge: 60000}
+        cookie: { maxAge: 3600000}
         })
     );
 

@@ -55,10 +55,14 @@ router.post('/register', async function(req, res){
     };
     try {
         //create a session and redirect
-        var sess                = req.session;      //initialize session variable
-        req.session.user_id     = user_id;          //set user id
-        req.session.user_name   = user_name;        //set user name
-        res.redirect('/manage');
+        if(sessionData){                            //destroy any existing session before creating a new one
+                    sessionData.destroy();
+                }
+                var sessionData         = req.session;      //initialize session variable
+                sessionData.user = {"id": rows[0].user_id,
+                                    "name": rows[0].user_name
+                                    };     
+                res.redirect('/manage');
     } catch {
         console.log(pool.err);
     };
