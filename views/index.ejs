@@ -68,9 +68,9 @@
                     </h3>
                 </a>
                 <p class="desc"><%= rows[i].description %></p>
-                Current Bid: </strong><%= '$'+ (rows[i].currBidCents/100).toFixed(2) %>
+                Current Bid: </strong><%if(rows[i].curr_bid){%><%= '$'+ (rows[i].curr_bid).toFixed(2) %><% } %>
             </div>
-            <div class="dt"> Ends: <%= rows[i].endDatetime %></div>
+            <div class="dt"> Ends: <%= rows[i].end_datetime %></div>
         </div>
         <hr>
     </div> 
