@@ -15,7 +15,7 @@ var bodyParser  = require("body-parser"),
 //DESTROY   /dogs/:id   DELETE      remove one dog
 
 //=====================
-//index routes
+// INDEX ROUTES
 //=====================
 
 router.get("/", async function(req, res){
@@ -69,6 +69,34 @@ router.get("/manage", sessionChecker, async function(req, res){
         console.log(pool.err);
     }
 });
+
+// TODO
+//=============================================================================================
+//  EDIT ROUTE - Render form to edit user profile (only accessible by originator)
+//=============================================================================================
+router.get("/manage/:id/edit", sessionChecker, async function(req, res){
+    console.log(res.locals.currentUser);
+    
+    try {
+
+        let sql = 'SELECT * FROM users WHERE user_id =?';
+
+        let rows = await pool.query(sql, [res.locals.currentUser.id]);
+        console.log(JSON.stringify(rows));
+        res.render('editProfile', {rows: rows});
+
+    } catch {
+
+        console.log(pool.err);
+    }
+});
+
+// TODO
+//=============================================================================================
+//  UPDATE ROUTE - Updates user profile and redirects to the manage page.
+//=============================================================================================
+
+
 
 //=============================================================================================
 //  Render form to rank soul (only accessible by originator, required prior to listing soul)
