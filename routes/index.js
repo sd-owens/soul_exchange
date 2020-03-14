@@ -14,10 +14,9 @@ var bodyParser  = require("body-parser"),
 //UPDATE    /dogs/:id   PUT         Update particular dog, then redirect somewhere
 //DESTROY   /dogs/:id   DELETE      remove one dog
 
-//=====================
+//=============================================================================================
 // INDEX ROUTES
-//=====================
-
+//=============================================================================================
 router.get("/", async function(req, res){
     res.redirect("/index");
 });
@@ -34,12 +33,8 @@ router.get("/feature" ,function(req, res){
     res.render("feature");
 })
 
-//=============
-//  MANAGE
-//=============
-
 //=============================================================================================
-//  Loads the page that lists all the souls of the owner and allows them to interact with them.
+//  MANAGE - lists all the souls of the owner and allows them to interact with them.
 //=============================================================================================
 router.get("/manage", sessionChecker, async function(req, res){
     console.log(res.locals.currentUser);
@@ -118,9 +113,8 @@ router.put("/manage/:id", sessionChecker, async function(req, res){
     }
 });
 
-
 //=============================================================================================
-//  Render form to rank soul (only accessible by originator, required prior to listing soul)
+//  EDIT ROUTE - Render form to rank soul (only accessible by originator)
 //=============================================================================================
 router.get("/rank/:id", sessionChecker, function(req, res){
     var soul_id = req.params.id
@@ -129,7 +123,7 @@ router.get("/rank/:id", sessionChecker, function(req, res){
 });
 
 //=============================================================================================
-//  Updates soul ranking of a user and redirects to the manage page.
+//  UPDATE ROUTE SOUL RANK - Updates soul ranking of a user and redirects to the manage page.
 //=============================================================================================
 router.post("/manage", sessionChecker, async function(req, res){
     console.log(res.locals.currentUser);
@@ -147,7 +141,7 @@ router.post("/manage", sessionChecker, async function(req, res){
 });
 
 //=============================================================================================
-//  Added funds to a User's wallet and redirects to the Manage page.
+//  UPDATE ROUTE - Added funds to a User's wallet and redirects to the Manage page.
 //=============================================================================================
 router.post("/manage/wallet", sessionChecker, async function(req, res){
     console.log(res.locals.currentUser);
@@ -172,18 +166,19 @@ router.post("/manage/wallet", sessionChecker, async function(req, res){
 });
 
 //=============================================================================================
-//  GET form to add funds to wallet
+//  NEW ROUTE - Get form to add funds to wallet
 //=============================================================================================
 router.get("/wallet", sessionChecker, function(req, res){
     res.render("addFunds.ejs");
 });
 
+//=============================================================================================
+//  LISTINGS ROUTES (AUCTIONS)
+//=============================================================================================
 
-//====================
-//Listing routes
-//====================
-
-// INDEX ROUTE (RETURNS THE LIST OF CURRENT LISTINGS)
+//=============================================================================================
+//  INDEX ROUTE - Returns a list of current listings.
+//=============================================================================================
 router.get("/index", async function(req, res){
     try {
         //get active soul listings
@@ -198,7 +193,9 @@ router.get("/index", async function(req, res){
     };
 });
 
-// NEW LISTING ROUTE (DISPLAY FORM TO CREATE A NEW LISTING) <--- (:ID here is soul to be listed, NOT listing_id since it does not exist yet)
+//=============================================================================================
+// NEW LISTING ROUTE - Displays form to create a new listing.
+//=============================================================================================
 router.get("/index/:id/new", sessionChecker, async function(req, res){
     try {
         // pre-populate form to add new listing with soul_name and owner_name;
@@ -211,7 +208,9 @@ router.get("/index/:id/new", sessionChecker, async function(req, res){
     };
 });
 
-// CREATE LISTING ROUTE (ADDS A NEW LISTING TO THE DATABASE)
+//=============================================================================================
+//  CREATE LISTING ROUTE - Adds a new listing (auction)
+//=============================================================================================
 router.post("/index", sessionChecker, async function(req, res){
     console.log(req.body);
     var description = req.body.description;
@@ -240,7 +239,9 @@ router.post("/index", sessionChecker, async function(req, res){
     } 
 });
 
-// SHOW LISTING ROUTE (SHOW INFORMATION ABOUT ONE LISTING ???)
+//=============================================================================================
+//  SHOW LISTING ROUTE - Shows information about all currently active listings.
+//=============================================================================================
 router.get("/index/:id", async function(req, res){
     try {
         var listing = req.params.id;
@@ -258,7 +259,9 @@ router.get("/index/:id", async function(req, res){
     }
 });
 
-// EDIT LISTING ROUTE (GETS FORM TO EDIT EXISTING LISTING) <--- (:ID here is the listing_id from the listings table)
+//=============================================================================================
+//  EDIT LISTING ROUTE - Renders a form to edit a current listing.
+//=============================================================================================
 router.get("/index/:id/edit", sessionChecker, async function(req, res){
 
     try {
@@ -284,7 +287,9 @@ router.get("/index/:id/edit", sessionChecker, async function(req, res){
     }  
 });
 
-// UPDATE LISTING ROUTE (POSTS UPDATED LISTING INFORMATINO TO THE DB) (:ID here is the listing_id from listings table)
+//=============================================================================================
+//  UPDATE LISTING ROUTE - Updates a specific listing and then redirects to index page.
+//=============================================================================================
 
 /* TODO
 (node:73817) UnhandledPromiseRejectionWarning: Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client 
@@ -314,10 +319,11 @@ router.put("/index/:id", sessionChecker, async function(req, res){
             console.log(pool.err);
         }
 
-
 });  //in form action ends with "?_method=PUT" and method="POST"
 
-// DESTROY LISTING ROUTE <--- (:ID here is the listing_id form listings table)
+//=============================================================================================
+//  DESTROY LISTING ROUTE - deletes a currently active listing.
+//=============================================================================================
 router.delete("/index/:id", sessionChecker, async function(req, res){
 
     try {
@@ -342,9 +348,9 @@ router.delete("/index/:id", sessionChecker, async function(req, res){
 })  //in form action ends with "?_method=DELETE" and method="POST"
 
 
-//==============
+//=============================================================================================
 //  BID ROUTES
-//==============
+//=============================================================================================
 router.put("/index/:id/bid", sessionChecker, async function(req, res){
     try {
         // get the current high bid
@@ -367,11 +373,10 @@ router.put("/index/:id/bid", sessionChecker, async function(req, res){
     }
 });
 
-//=================================================
-//  PAY ROUTES
-//=================================================
+//=============================================================================================
+//  PAY ROUTES - Renders a new for payment
+//=============================================================================================
 
-//Pay form
 router.get("/pay/:id", sessionChecker, async function(req, res){
     try{
         sql = 'SELECT * FROM listings l INNER JOIN listing_details ld on ld.listing_id = l.listing_id INNER JOIN souls s on s.soul_id = ld.soul_id WHERE high_bidder = ? AND l.listing_id = ?';    
@@ -388,8 +393,9 @@ router.get("/pay/:id", sessionChecker, async function(req, res){
         console.log(pool.err);
     }
 });
-
-//Create route for payment
+//=============================================================================================
+//  CREATE ROUTE - for payment
+//=============================================================================================
 router.post("/pay/:id", sessionChecker, async function(req, res){
     try{
         sql1 = 'SELECT balance FROM users WHERE user_id = ?'; //how much money does the current user have?
@@ -423,11 +429,9 @@ router.post("/pay/:id", sessionChecker, async function(req, res){
     }
 });
 
-
-
-//=================================================
-// REVOKE ROUTE - Cancel a past-due auction listing
-//=================================================
+//=============================================================================================
+// REVOKE ROUTE - Gets a form to cancel a past-due auction listing due to non-payment.
+//=============================================================================================
 router.get("/revoke/:id", sessionChecker, async function(req, res){
     try{
         sql = 'SELECT * FROM listings l INNER JOIN listing_details ld on ld.listing_id = l.listing_id INNER JOIN souls s on s.soul_id = ld.soul_id WHERE owner_id = ? AND l.listing_id = ?';    
@@ -443,6 +447,9 @@ router.get("/revoke/:id", sessionChecker, async function(req, res){
 
 });
 
+//=============================================================================================
+// REVOKE ROUTE - Cancel a past-due auction listing due to non-payment.
+//=============================================================================================
 router.post("/revoke/:id", sessionChecker, async function(req, res){
     try {
         sql1 = 'UPDATE listing_details SET curr_bid = 0, high_bidder = NULL WHERE listing_id = ?';
@@ -455,8 +462,9 @@ router.post("/revoke/:id", sessionChecker, async function(req, res){
     }
 });
 
-
-//middleware to check for a session
+//=============================================================================================
+// MIDDLEWARE - To check for an active user session
+//=============================================================================================
 function sessionChecker(req, res, next){
     if (req.session.user) {
         next();

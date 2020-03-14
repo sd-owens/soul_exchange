@@ -1,12 +1,14 @@
 <% include ./partials/header %>
 
 <h3>Details</h3>
-<a class="btn btn-primary btn-sm" role="button" href="/manage/<%= rows[0].user_id %>/edit "><span class="glyphicon glyphicon-usd"></span> Edit Profile</a>
 <ul> 
     <li>User Name: <%= rows[0].user_name%></li>
     <li>First Name: <%= rows[0].first_name %></li>
     <li>Last Name: <%= rows[0].last_name %></li>
-    <li>Wallet Balance: <%= rows[0].balance %><br /><a class="btn btn-primary btn-sm" role="button" href="/wallet"><span class="glyphicon glyphicon-usd"></span> Add Funds to Wallet</a></li>
+    <li>Wallet Balance: <%= rows[0].balance %><br />
+        <a id="editButton" class="btn btn-success btn-sm" role="button" href="/manage/<%= rows[0].user_id %>/edit "><span class="glyphicon glyphicon-usd"></span> Edit Profile</a>
+        <a class="btn btn-primary btn-sm" role="button" href="/wallet"><span class="glyphicon glyphicon-usd"></span> Add Funds to Wallet</a>
+    </li>
 </ul>
 
 <% if(txns.length > 0){ %>
