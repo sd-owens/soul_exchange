@@ -46,7 +46,7 @@ router.get("/manage", sessionChecker, async function(req, res){
     let sql = 'SELECT * FROM souls s \
                 JOIN users u ON s.owner_id = u.user_id \
                 LEFT JOIN listings l ON l.seller_id = u.user_id \
-                WHERE u.user_name =?'; 
+                WHERE u.user_id =?'; 
     let sqlTxn = 'SELECT * FROM listings l \
                 JOIN listing_details ld on l.listing_id = ld.listing_id \
                 JOIN souls s on s.soul_id = ld.soul_id \
@@ -59,7 +59,7 @@ router.get("/manage", sessionChecker, async function(req, res){
                 JOIN souls s on s.soul_id = ld.soul_id \
                 WHERE l.seller_id = ? AND NOT l.archived';
     try {
-        let rows = await pool.query(sql, [res.locals.currentUser.name]);
+        let rows = await pool.query(sql, [res.locals.currentUser.id]);
         let txns = await pool.query(sqlTxn, [res.locals.currentUser.id]);
         let lst = await pool.query(sqlListings, [res.locals.currentUser.id]);
         console.log(txns);
@@ -70,12 +70,11 @@ router.get("/manage", sessionChecker, async function(req, res){
     }
 });
 
-// TODO
 //=============================================================================================
 //  EDIT ROUTE - Render form to edit user profile (only accessible by originator)
 //=============================================================================================
 router.get("/manage/:id/edit", sessionChecker, async function(req, res){
-    console.log(res.locals.currentUser);
+    // console.log(res.locals.currentUser);
     
     try {
 
@@ -91,11 +90,33 @@ router.get("/manage/:id/edit", sessionChecker, async function(req, res){
     }
 });
 
-// TODO
 //=============================================================================================
 //  UPDATE ROUTE - Updates user profile and redirects to the manage page.
 //=============================================================================================
 
+router.put("/manage/:id", sessionChecker, async function(req, res){
+    // console.log(res.locals.currentUser);
+
+    var user_name = req.body.user_name;
+    var first_name = req.body.first_name;
+    var last_name = req.body.last_name;
+    var password = req.body.password;
+    
+    try {
+
+        let sql = 'UPDATE users \
+                   SET user_name =?, first_name =?,  last_name =?, password =? \
+                   WHERE user_id =?';
+
+        await pool.query(sql, [user_name, first_name, last_name, password, res.locals.currentUser.id]);
+        
+        res.redirect('/manage');
+
+    } catch {
+
+        console.log(pool.err);
+    }
+});
 
 
 //=============================================================================================
