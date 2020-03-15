@@ -25,7 +25,7 @@ router.get('/register', function(req, res){
 });
 
 //==================================================================
-//Register new users- built with asyn, await.  
+//Register new users- built with async, await.  
 //==================================================================
 router.post('/register', async function(req, res){
     try{
@@ -100,12 +100,15 @@ router.post("/login", async function(req, res){
             }
             else {
                 res.send({
+
                     "code":204,"success":"User name and password do not match"});
             }
         } else {
+
             res.send({"code":204,"success":"User does not exist"});    
         }
     } catch {
+
         console.log(pool.err);
         res.send({"code":400,"failed":"error ocurred in catch"});
     }

@@ -114,6 +114,57 @@ router.put("/manage/:id", sessionChecker, async function(req, res){
 });
 
 //=============================================================================================
+//  EDIT ROUTE - Render form to edit soul (only accessible by soul owner)
+//=============================================================================================
+router.get("/soul/:id/edit", sessionChecker, async function(req, res){
+
+    var soul_id = req.params.id;
+    console.log(soul_id);
+
+    try {
+
+        var sql = 'SELECT s.soul_id, s.soul_name, s.avatar, u.user_name FROM souls s JOIN users u ON u.user_id = s.originator_id WHERE soul_id =?'
+        var rows = await pool.query(sql, [soul_id]);
+
+    } catch {
+
+        console.log(pool.error);
+    }
+
+    console.log(rows);
+    res.render('editSoul.ejs', {rows: rows})
+});
+
+//=============================================================================================
+//  UPDATE ROUTE SOUL RANK - Updates soul data (only accesible by soul owner)
+//=============================================================================================
+router.put("/soul/:id", sessionChecker, async function (req, res) {
+
+    var soul_id = req.params.id;
+    //console.log(soul_id);
+    var soul_name = req.body.soul_name;
+    var avatar = req.body.avatar;
+
+    try {
+
+        var sql = 'UPDATE souls \
+                   SET soul_name =?, avatar =? \
+                   WHERE soul_id =?';
+
+        await pool.query(sql, [soul_name, avatar, soul_id]);
+
+        res.redirect('/manage');
+
+    } catch {
+
+        console.log(pool.err);
+    }
+    
+
+
+});
+
+//=============================================================================================
 //  EDIT ROUTE - Render form to rank soul (only accessible by originator)
 //=============================================================================================
 router.get("/rank/:id", sessionChecker, function(req, res){

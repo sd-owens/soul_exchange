@@ -10,12 +10,14 @@ var bodyParser      = require('body-parser'),
     express         = require('express'),
     methodOverride  = require("method-override"),
     mysql           = require('mysql'),
+    //flash           = require('connect-flash'),
     path            = require('path'),
     pool            = require('./db'),
     session         = require('express-session'),
     util            = require('util'),
     helmet          = require('helmet'),
     app             = express();
+
 
 app.use(
     session(
@@ -27,16 +29,20 @@ app.use(
         })
     );
 
+//app.use(flash);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(express.static(__dirname + '/public'));
 app.use(methodOverride("_method"));
+
 
 app.set("view engine", "ejs");
 
 // middleware to make 'user' available to all templates
 app.use(function(req, res, next) {
   res.locals.currentUser = req.session.user;
+  //res.locals.error = req.flash('error');
+  //res.locals.success = req.flash('success');
   next();
 });
 

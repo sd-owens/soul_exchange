@@ -6,7 +6,7 @@
     <li>First Name: <%= rows[0].first_name %></li>
     <li>Last Name: <%= rows[0].last_name %></li>
     <li>Wallet Balance: <%= rows[0].balance %><br />
-        <a id="editButton" class="btn btn-success btn-sm" role="button" href="/manage/<%= rows[0].user_id %>/edit "><span class="glyphicon glyphicon-usd"></span> Edit Profile</a>
+        <a id="editButton" class="btn btn-success btn-sm" role="button" href="/manage/<%= rows[0].user_id %>/edit "><span class="glyphicon glyphicon-pencil"></span> Edit Profile</a>
         <a class="btn btn-primary btn-sm" role="button" href="/wallet"><span class="glyphicon glyphicon-usd"></span> Add Funds to Wallet</a>
     </li>
 </ul>
@@ -59,7 +59,7 @@
                     <% } %>
                     <% if(lst[i].endUTX < Date.now() - 259200) { %>
                      <li>
-                         This listing is past due <a class="btn btn-primary" href="/revoke/<%=lst[i].listing_id%>" ><span class="glyphicon glyphicon-remove"></span> Revoke</a>
+                         This listing is past due <a class="btn btn-primary btn-sm" href="/revoke/<%=lst[i].listing_id%>" ><span class="glyphicon glyphicon-remove"></span> Revoke</a>
                  </li>
                      <% } %>
                 </ul>
@@ -85,19 +85,21 @@
                         <li>Ranking: <%= rows[i].soul_score %></li>
                     <% } %>
                 </ul>
-                <a class="btn btn-primary" role="button" href="/assets/img/soulCertificate.png" download=" <%= rows[i].soul_id %>.png ">
+                <a class="btn btn-primary btn-sm" role="button" href="/assets/img/soulCertificate.png" download=" <%= rows[i].soul_id %>.png ">
                 <span class="glyphicon glyphicon-download-alt"></span> Certificate of Ownership</a>
+                <a class="btn btn-success btn-sm" role="button" href="/soul/<%= rows[i].soul_id %>/edit ">
+                    <span class="glyphicon glyphicon-pencil"></span>Edit Soul Info</a>
                 
              <% if(rows[i].soul_score > 0 ) { %>
 
 
                 <% if(!rows[i].listing_id) { %>
 
-                        <a class="btn btn-primary" href="/index/<%= rows[i].soul_id %>/new" ><span class="glyphicon glyphicon-tag"></span> List Soul</a>
+                        <a class="btn btn-primary btn-sm" href="/index/<%= rows[i].soul_id %>/new" ><span class="glyphicon glyphicon-tag"></span> List Soul</a>
 
                     <% } else { %>
 
-                    <a class="btn btn-primary" href="/index/<%= rows[i].soul_id %>/edit" ><span class="glyphicon glyphicon-tag"></span> Edit Listing</a>
+                    <a class="btn btn-primary btn-sm" href="/index/<%= rows[i].soul_id %>/edit" ><span class="glyphicon glyphicon-tag"></span> Edit Listing</a>
                 
                     <% } %>
             <% } %>
