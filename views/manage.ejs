@@ -1,15 +1,23 @@
 <% include ./partials/header %>
 
 <h3>Details</h3>
-<ul> 
-    <li>User Name: <%= rows[0].user_name%></li>
-    <li>First Name: <%= rows[0].first_name %></li>
-    <li>Last Name: <%= rows[0].last_name %></li>
-    <li>Wallet Balance: <%= rows[0].balance %><br />
-        <a id="editButton" class="btn btn-success btn-sm" role="button" href="/manage/<%= rows[0].user_id %>/edit "><span class="glyphicon glyphicon-pencil"></span> Edit Profile</a>
-        <a class="btn btn-primary btn-sm" role="button" href="/wallet"><span class="glyphicon glyphicon-usd"></span> Add Funds to Wallet</a>
-    </li>
-</ul>
+<table> 
+    <tr>
+        <td><img src="<%= rows[0].avatar %>" class='leftImage'></td>
+        <td>
+            <ul>
+                <li>User Name: <%= rows[0].user_name%></li>
+                <li>First Name: <%= rows[0].first_name %></li>
+                <li>Last Name: <%= rows[0].last_name %></li>
+                <li>Wallet Balance: <%= rows[0].balance %>
+                    <p>&nbsp;</p>
+                <a id="editButton" class="btn btn-success btn-sm" role="button" href="/manage/<%= rows[0].user_id %>/edit "><span class="glyphicon glyphicon-pencil"></span> Edit Profile</a>
+                <a class="btn btn-primary btn-sm" role="button" href="/wallet"><span class="glyphicon glyphicon-usd"></span> Add Funds to Wallet</a>
+                </li>   
+            </ul>
+        </td>
+    </tr>
+</table>
 
 <% if(txns.length > 0){ %>
     <h3 id="txns">You Won!</h3>
@@ -88,7 +96,7 @@
                 <a class="btn btn-primary btn-sm" role="button" href="/assets/img/soulCertificate.png" download=" <%= rows[i].soul_id %>.png ">
                 <span class="glyphicon glyphicon-download-alt"></span> Certificate of Ownership</a>
                 <a class="btn btn-success btn-sm" role="button" href="/soul/<%= rows[i].soul_id %>/edit ">
-                    <span class="glyphicon glyphicon-pencil"></span>Edit Soul Info</a>
+                    <span class="glyphicon glyphicon-pencil"></span>Edit Soul</a>
                 
              <% if(rows[i].soul_score > 0 ) { %>
 

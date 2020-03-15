@@ -1,26 +1,32 @@
 <% include ./partials/header %>
 
 <div class="container">
+    <h1>Edit Soul Form</h1>
+            <div>
+               <img src="<%= rows[0].avatar %>" class='leftImage'><br> 
+            </div>
     <div class="formGroup">
         <div class="register-form">
-            <h1>Edit Soul Form</h1>
-            <form action="/soul/<%= rows[0].soul_id %>?_method=PUT" method="POST">
-                <input type="number" value="<%= rows[0].soul_id %>" hidden>
+            <tr>
+                <td>
+                    <form action="/soul/<%= rows[0].soul_id %>?_method=PUT" method="POST">
+                    <input type="number" value="<%= rows[0].soul_id %>" hidden>
+                    <label for="soul_name">Soul Name: </label>
+                    <input id="soul_name" type="text" name="soul_name" value="<%= rows[0].soul_name %>" required>
 
-                <label for="soul_name">Soul Name: </label>
-                <input id="soul_name" type="text" name="soul_name" value="<%= rows[0].soul_name %>" required>
+                    <label for="avatar">Soul Avatar: </label>
+                    <input id="avatar" type="text" name="avatar" value="<%= rows[0].avatar %>" required>
 
-                <label for="avatar">Soul Avatar: </label>
-                <input id="avatar" type="text" name="avatar" value="<%= rows[0].avatar %>" required>
+                    <label for="originator">Originator: </label>
+                    <input id="user" type="text" name="originator" value="<%= rows[0].user_name %>" disabled>
 
-                <label for="originator">Originator: </label>
-                <input id="user" type="text" name="originator" value="<%= rows[0].user_name %>" disabled>
-
-                <div id="formButtons">
-                    <button id="submitButton" class="btn btn-large btn-primary">Submit</button>
-                    <a id="cancelButton" href="/manage" class="btn btn-large btn-primary" >Back</a>
-                </div>
-            </form>
+                    <div id="formButtons">
+                        <button id="submitButton" class="btn btn-large btn-primary">Submit</button>
+                        <a id="cancelButton" href="/manage" class="btn btn-large btn-primary" >Back</a>
+                    </div>
+                    </form>  
+                </td>
+            </tr>
         </div>
 
 

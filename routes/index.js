@@ -96,14 +96,15 @@ router.put("/manage/:id", sessionChecker, async function(req, res){
     var first_name = req.body.first_name;
     var last_name = req.body.last_name;
     var password = req.body.password;
+    var avatar = req.body.avatar;
     
     try {
 
         let sql = 'UPDATE users \
-                   SET user_name =?, first_name =?,  last_name =?, password =? \
+                   SET user_name =?, first_name =?,  last_name =?, password =?, avatar =? \
                    WHERE user_id =?';
 
-        await pool.query(sql, [user_name, first_name, last_name, password, res.locals.currentUser.id]);
+        await pool.query(sql, [user_name, first_name, last_name, password, avatar, res.locals.currentUser.id]);
         
         res.redirect('/manage');
 
