@@ -32,13 +32,13 @@ router.get("/contact", function(req, res){
 router.get("/feature" ,function(req, res){
     res.render("feature");
 })
-
+ 
 //=============================================================================================
 //  MANAGE - lists all the souls of the owner and allows them to interact with them.
 //=============================================================================================
 router.get("/manage", sessionChecker, async function(req, res){
     console.log(res.locals.currentUser);
-    let sql = 'SELECT * FROM souls s \
+    let sql = 'SELECT *, s.avatar s_avatar FROM souls s \
                 JOIN users u ON s.owner_id = u.user_id \
                 LEFT JOIN listings l ON l.seller_id = u.user_id \
                 WHERE u.user_id =?'; 
@@ -57,8 +57,7 @@ router.get("/manage", sessionChecker, async function(req, res){
         let rows = await pool.query(sql, [res.locals.currentUser.id]);
         let txns = await pool.query(sqlTxn, [res.locals.currentUser.id]);
         let lst = await pool.query(sqlListings, [res.locals.currentUser.id]);
-        console.log(txns);
-        console.log(lst);
+        console.log(rows);
         res.render('manage.ejs', {rows: rows, txns: txns, lst: lst});
     } catch {
         console.log(pool.err);
